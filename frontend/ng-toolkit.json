@@ -1,0 +1,12 @@
+{
+  "universal": {
+    "--": [
+      "[--http",
+      "false]"
+    ],
+    "project": "Neolth",
+    "skipInstall": false,
+    "directory": ".",
+    "http": true
+  }
+}
