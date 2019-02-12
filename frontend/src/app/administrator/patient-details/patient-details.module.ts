@@ -7,13 +7,15 @@ import { PatientDetailsService } from './patient-details.service';
 import { ViewPatientDetailsComponent } from './view-patient-details/view-patient-details.component';
 import { AddPatientDetailsComponent } from './add-patient-details/add-patient-details.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [PatientDetailsComponent, ViewPatientDetailsComponent, AddPatientDetailsComponent],
   imports: [
     CommonModule,
     PatientDetailsRoutingModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    DataTablesModule
   ],
   providers:[
     PatientDetailsService

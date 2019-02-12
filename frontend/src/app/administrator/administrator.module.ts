@@ -12,6 +12,7 @@ import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { SpinnerComponent } from './shared/spinner.component';
 import { BreadcrumbComponent } from './shared/breadcrumb/breadcrumb.component';
+import { DataTablesModule } from 'angular-datatables';
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -34,6 +35,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AdministratorRoutingModule,
     NgbModule, 
     PerfectScrollbarModule,
+    DataTablesModule
   ],
   providers: [
     {
