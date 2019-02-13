@@ -7,14 +7,15 @@ import { HcpDetailsService } from './hcp-details.service';
 import { AddHcpDetailsComponent } from './add-hcp-details/add-hcp-details.component';
 import { ViewHcpDetailsComponent } from './view-hcp-details/view-hcp-details.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [HcpDetailsComponent, AddHcpDetailsComponent, ViewHcpDetailsComponent],
   imports: [
     CommonModule,
     HcpDetailsRoutingModule,
-    NgxDatatableModule 
+    NgxDatatableModule,
+    DataTablesModule
   ],
   providers:[
     HcpDetailsService

@@ -6,8 +6,9 @@ export class HcpDetailsService {
    private api_host : any = environment.API_URL;
    constructor(private http: HttpClient) { }
 
-    getAllHcpData()
+    getAllHcpData(data: any,header)
     {
-        return this.http.get(`${this.api_host}admin/hcp`);
+        //console.log(data);
+        return this.http.post(`${this.api_host}admin/hcp`,data,header);
     }
 }

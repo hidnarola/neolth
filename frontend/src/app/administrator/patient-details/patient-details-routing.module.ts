@@ -6,7 +6,7 @@ import { AddPatientDetailsComponent } from './add-patient-details/add-patient-de
 
 const routes: Routes = [
   { path:'view', component: ViewPatientDetailsComponent},
-  { path:'add', component: AddPatientDetailsComponent},
+  //{ path:'add', component: AddPatientDetailsComponent},
 ];
 
 @NgModule({

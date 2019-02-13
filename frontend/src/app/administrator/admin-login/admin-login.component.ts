@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { AdminLoginService } from './admin-login.service';
 import { ToastrService } from 'ngx-toastr';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-admin-login',
@@ -44,10 +45,41 @@ export class AdminLoginComponent implements OnInit {
       let u_data = this.userdata;
       this.AdminLoginService.signin({email:u_data.email,password:u_data.password}).subscribe(
       (response)=>{
-        
-      },(err)=>{
-        if (err.status == 404) {
+        this.userdata['email'] = '';
+        this.userdata['password'] = '';
+        var message = "";
 
+        if (response) {
+          if (response['status']) {
+            this.userdata = {
+              data: response['data'],
+              refresh_token: response['refresh_token'],
+              token: response['token'],
+            };
+            this.localStorage.setItem('admin', btoa(JSON.stringify(this.userdata)));
+            /*this.MessageService.set_logged_in_user(JSON.stringify(this.userdata));*/
+            this.toastr.success('', 'Login Successfully done!', { timeOut: 3000 });
+  
+            this.router.navigate(['/admin-panel/dashboard']);
+            
+          } else {
+            $('#email').val('');
+            $('#password').val('');
+            message = "Something went wrong, Please try again later!";
+            this.toastr.error(message, 'Error!', { timeOut: 3000 });
+          }
+        } else {
+          $('#email').val('');
+          $('#password').val('');
+          message = "Something went wrong, Please try again later!";
+          this.toastr.error(message, 'Error!', { timeOut: 3000 });
+
+        }
+
+      },(err)=>{
+        if (err.status == 400) {
+          $('#email').val('');
+          $('#password').val('');
           var message = "Something went wrong, Please try again later!";
           //if (err.error.message) {
             //message = err.error.message;
@@ -56,11 +88,15 @@ export class AdminLoginComponent implements OnInit {
           this.show_spinner = false;
         }
         else{
+          $('#email').val('');
+          $('#password').val('');
           var message = "Something went wrong, Please try again later!";
           this.toastr.error(message, 'Error!');
           this.show_spinner = false;
         }
       },()=>{
+        $('#email').val('');
+        $('#password').val('');
         this.show_spinner = false; 
       });
     }

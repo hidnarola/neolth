@@ -6,7 +6,7 @@ import { AddHcpDetailsComponent } from './add-hcp-details/add-hcp-details.compon
 
 const routes: Routes = [
   { path: 'view', component: ViewHcpDetailsComponent},
-  { path: 'add', component: AddHcpDetailsComponent}
+  //{ path: 'add', component: AddHcpDetailsComponent}
 
 ];
 
