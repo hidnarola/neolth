@@ -10,7 +10,7 @@ var WellnessPracticesModelSchema = new Schema({
     admin_id: { type: mongoose.Schema.Types.ObjectId, ref: 'admin' },
     name: { type: String, required: true },
     tech_type: [{ type: String }],
-    practice_type: { type: String, required: true },
+    practice_type: [{ type: String, required: true }],
     practice_content: { type: String, required: true },
     matching_symptom: [{ type: String, required: true }],
     matching_stress: [{ type: String, required: true }],

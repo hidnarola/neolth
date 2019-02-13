@@ -15,7 +15,7 @@ var ObjectId = require('mongodb').ObjectID;
 var mongoose = require('mongoose');
 
 
-router.post("/wellness_practices", async (req, res) => {
+router.post("/wellness_practice", async (req, res) => {
     var schema = {
         "name": {
             notEmpty: true,
@@ -51,7 +51,7 @@ router.post("/wellness_practices", async (req, res) => {
     if (!errors) {
         var obj = {
             "name": req.body.name,
-            "practice_type": req.body.practice_type,
+            "practice_type": JSON.parse(req.body.practice_type),
             "practice_content": req.body.practice_content,
             "matching_symptom": JSON.parse(req.body.matching_symptom),
             "matching_stress": JSON.parse(req.body.matching_stress),
@@ -138,7 +138,7 @@ router.post("/wellness_practices", async (req, res) => {
 
 
 // Get all Wellness practices
-router.get("/wellness_practices", async (req, res) => {
+router.post("/wellness_practices", async (req, res) => {
     var totalMatchingCountRecords = await common_helper.count(Wellness, { "is_del": false });
     var sortOrderColumnIndex = req.body.order[0].column;
     let sortOrderColumn = sortOrderColumnIndex == 0 ? '_id' : req.body.columns[sortOrderColumnIndex].data;

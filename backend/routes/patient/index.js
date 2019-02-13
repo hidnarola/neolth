@@ -12,6 +12,7 @@ var WellnessPractice = require('../../models/wellness_practices');
 var Tag = require('../../models/tag');
 var Patient = require('../../models/patient');
 var HCP = require('../../models/hcp');
+var Practice = require('../../models/practices');
 
 
 // Patient Health Check in
@@ -32,9 +33,7 @@ router.post("/health_check_in", async (req, res) => {
             ansArr.push(newOption);
         });
         var aggregate = [
-            {
-                $match: { "algorithm": "yes" }
-            },
+
             {
                 $lookup: {
                     from: "option",
@@ -64,10 +63,13 @@ router.post("/health_check_in", async (req, res) => {
                 for (const a of answers) {
                     if ((oId.toString()) === (a.option_id.toString())) {
                         answer.push({
+                            value: a.value,
+                            patient_id: req.userInfo.id,
                             question_id: d._id,
                             option_id: oId,
                         });
                     }
+
                     if (d.sequence == 3 && (oId.toString()) === (a.option_id.toString())) {
                         diagnosisArr.push(o.value.value.tag)
                     }
@@ -151,11 +153,13 @@ router.post("/health_check_in", async (req, res) => {
             }
         }
         var health_resp = await common_helper.insertMany(Answer, answer);
+        var practice_uniq = _.uniq(practiceArr);
+
         var tag = {
             "patient_id": req.userInfo.id,
             "diagnosis": diagnosisArr,
             "symptoms": symptomArr,
-            "practice_type": practiceArr,
+            "practice_type": practice_uniq,
             "proficiency": proficiency_tags,
             "stress_style": stress_style
         }
@@ -165,41 +169,82 @@ router.post("/health_check_in", async (req, res) => {
             res.status(config.INTERNAL_SERVER_ERROR).json(tag_resp);
         } else {
             logger.trace("Tags have been assigned successfully");
-            console.log('tag_resp', tag_resp);
 
             prof = tag_resp.data.proficiency;
-            prac = tag_resp.data.practice_type;
-            stres = tag_resp.data.stress_style;
-            sympt = tag_resp.data.symptoms;
-            diag = tag_resp.data.diagnosis;
+            prac = (tag_resp.data.practice_type).sort();
+            stres = (tag_resp.data.stress_style).sort();
+            sympt = (tag_resp.data.symptoms).sort();
+            diag = (tag_resp.data.diagnosis).sort();
 
-            // var aggregate = [
-            //     {
-            //         $match: {
-            //             matching_proficiency: { $eq: prof },
-            //             practice_type: { $in: prac },
-            //             matching_stress: { $eq: stres },
-            //             matching_symptom: { $in: sympt },
-            //             // matching_diagnosis: { $in: diag },
-            //         },
-            //     },
-
-            // ]
-            // let data = await WellnessPractice.aggregate(aggregate);
-
-            var arr = [];
+            var stress_data = [];
+            var pract_arr = [];
+            var symptom_data = [];
             var proficncy_arr = await WellnessPractice.find({ "matching_proficiency": { $eq: prof } })
             for (const p of proficncy_arr) {
-                if (in_array(prac, p)) {
-                    console.log('1', 1);
+                var prac_arr = _.intersection(prac, p.practice_type)
+                if (prac_arr.length >= 1) {
+                    pract_arr.push(p);
+                }
 
-                    arr.push(p);
-                    console.log('p', p);
-
+            }
+            function compare(stress_match, stres, s) {
+                stress_match.forEach((e1) => stres.forEach((e2) => {
+                    if (e1 === e2) {
+                        stress_data.push(s);
+                    }
+                }
+                ));
+            }
+            for (const s of pract_arr) {
+                if (s.matching_stress.length == stres.length) {
+                    var stress_match = (s.matching_stress).sort();
+                    compare(stress_match, stres, s)
                 }
             }
+            for (const symp of stress_data) {
+                var sym_arr = _.intersection(symp.matching_symptom, sympt)
+                if (sym_arr.length >= 1) {
+                    symptom_data.push(symp);
+                }
+            }
+            var id = [];
+            var data_ins = [];
+            if (symptom_data.length == 5) {
+                for (const a of symptom_data) {
+                    var obj = {
+                        "patient_id": req.userInfo.id,
+                        "practice_id": (a._id).toString()
+                    }
+                    data_ins.push(obj);
+                }
+                var insert_practices = await Practice.insertMany(data_ins);
+            } else {
+                var size = 5 - symptom_data.length
+                for (const symp of symptom_data) {
+                    id.push(symp._id);
+                }
+                var data_size = await WellnessPractice.aggregate([
+                    // {
+                    //     $match: {
+                    //         "_id": { $in: { $ne: (id) } }
+                    //     }
+                    // },
+                    {
+                        $sample: { size: size }
+                    },
 
-            res.json({ "message": "Answer added successfully", "data": data })
+                ])
+                symptom_data = symptom_data.concat(data_size);
+                for (const a of symptom_data) {
+                    var obj = {
+                        "patient_id": req.userInfo.id,
+                        "practice_id": (a._id).toString()
+                    }
+                    data_ins.push(obj)
+                }
+                var insert_practices = await Practice.insertMany(data_ins);
+            }
+            res.json({ "message": "Answer added successfully", "data": health_resp })
         }
     }
     else {

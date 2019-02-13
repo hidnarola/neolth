@@ -486,7 +486,7 @@ common_helper.insert = async (collection, data = {}) => {
         return {
             status: 0,
             message: "Enter data for insert",
-            error: err
+            error: null
         };
     }
 }
@@ -517,7 +517,7 @@ common_helper.insertMany = async (collection, data = {}) => {
         return {
             status: 0,
             message: "Enter data for insert",
-            error: err
+            error: null
         };
     }
 }

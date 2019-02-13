@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var AnswerModelSchema = new Schema({
+    patient_id: { type: mongoose.Schema.Types.ObjectId, ref: 'patient' },
     question_id: { type: mongoose.Schema.Types.ObjectId, ref: 'question' },
     option_id: { type: mongoose.Schema.Types.ObjectId, ref: 'option' },
     value: { type: Object, default: null },
