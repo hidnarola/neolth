@@ -37,6 +37,7 @@
           <th style="width:20%"> LAST NAME</th>
           <th style="width:10%"> EMAIL</th>
           <th style="width:15%"> PHONE NUMBER</th>
+          <th>ACTION</th>
         </tr>
       </thead>
   
@@ -46,6 +47,7 @@
           <td>{{ patient_datas.last_name }}</td>
           <td>{{ patient_datas.email }}</td>
           <td>{{ patient_datas.phone_number }}</td>
+          <td><a class="btn btn-primary" routerLink='{{patient_datas._id}}'>View</a></td>
         </tr>
       </tbody>
       <tbody *ngIf="patient_data.length == 0">

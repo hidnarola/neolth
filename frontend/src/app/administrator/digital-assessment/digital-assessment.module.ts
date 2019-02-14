@@ -7,13 +7,15 @@ import { DigitalAssessmentService } from './digital-assessment.service';
 import { AddDigitalAssessmentComponent } from './add-digital-assessment/add-digital-assessment.component';
 import { ViewDigitalAssessmentComponent } from './view-digital-assessment/view-digital-assessment.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [DigitalAssessmentComponent, AddDigitalAssessmentComponent, ViewDigitalAssessmentComponent],
   imports: [
     CommonModule,
     DigitalAssessmentRoutingModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    DataTablesModule
   ],
   providers:[
     DigitalAssessmentService

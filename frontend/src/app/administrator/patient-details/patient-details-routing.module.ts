@@ -3,10 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { PatientDetailsComponent } from './patient-details.component';
 import { ViewPatientDetailsComponent } from './view-patient-details/view-patient-details.component';
 import { AddPatientDetailsComponent } from './add-patient-details/add-patient-details.component';
+import { ViewPatientComponent } from './view-patient/view-patient.component';
 
 const routes: Routes = [
   { path:'view', component: ViewPatientDetailsComponent},
-  //{ path:'add', component: AddPatientDetailsComponent},
+  { path:'view/:id', component: ViewPatientComponent},
 ];
 
 @NgModule({

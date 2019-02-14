@@ -10,4 +10,9 @@ export class PatientDetailsService {
     {
         return this.http.post(`${this.api_host}admin/patient`,data,headers);
     }
+
+    getPatientData(id:any,header)
+    {
+        return this.http.get(`${this.api_host}admin/patient/${id}`,header);
+    }
 }

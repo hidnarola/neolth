@@ -23,7 +23,7 @@ export class ViewPatientDetailsComponent implements OnInit {
     //editing = {};
     //rows = [];
     //temp = [...data];
-    patient_data:any = {};
+    patient_data:any = [];
     
     admin = JSON.parse(atob(this.localStorage.getItem('admin')));
     //console.log(admin.token);

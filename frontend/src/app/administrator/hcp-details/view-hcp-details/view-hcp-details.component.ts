@@ -4,6 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { LOCAL_STORAGE } from '@ng-toolkit/universal';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 
 declare var require: any;
@@ -24,7 +25,7 @@ export class ViewHcpDetailsComponent implements OnInit {
     //editing = {};
     //rows = [];
     //temp = [...data];
-    hcp_data:any = {};
+    hcp_data:any = [];
 
     admin = JSON.parse(atob(this.localStorage.getItem('admin')));
     
@@ -34,7 +35,7 @@ export class ViewHcpDetailsComponent implements OnInit {
        'x-access-token': this.admin.token
      });
     options = { headers: this.headers };
-    constructor(private HcpDetailsService : HcpDetailsService,@Inject(LOCAL_STORAGE) private localStorage: any) {
+    constructor(private HcpDetailsService : HcpDetailsService,@Inject(LOCAL_STORAGE) private localStorage: any,private toastr: ToastrService,) {
       // this.HcpDetailsService.getAllHcpData(null,options).subscribe((response)=>{
       //   console.log(response);
       // });
@@ -94,9 +95,9 @@ export class ViewHcpDetailsComponent implements OnInit {
       order: [[0, 'desc']],
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
+          
           this.HcpDetailsService.getAllHcpData(dataTablesParameters,this.options).subscribe((res) => {
-            //this.messageService.setLoading(false);
-            console.log(res);
+            
             if (res['status']) {
               this.hcp_data = res['data'];
               callback({
@@ -106,7 +107,7 @@ export class ViewHcpDetailsComponent implements OnInit {
               });
             }
           }, (err) => {
-            //this.messageService.setLoading(false);
+            
             callback({
               recordsTotal: 0,
               recordsFiltered: 0,
@@ -123,10 +124,45 @@ export class ViewHcpDetailsComponent implements OnInit {
         { data: 'last_name' },
         { data: 'email' },
         { data: 'phone_number' },
-        //{ data: 'status' },
-        //{ data: 'zipcode' }
+        { data: 'status'}
       ]
     };
+  }
+
+  Disable_HCP(e,id:string)
+  {
+    var hcp_id = {"id":id};
+    this.HcpDetailsService.disable_hcp(hcp_id,this.options).subscribe((response)=>{
+      if (response['message']) {
+        this.toastr.success(response['message'], 'Success!', { timeOut: 3000 });
+      }
+      this.render();
+    },(err)=>{
+      if (err['error'].message) {
+        this.toastr.error(err['error']['message'], 'Error!', { timeOut: 3000 });
+      }
+    });
+  }
+
+  Active_HCP(e,id:string)
+  {
+    var hcp_id = {"id":id};
+    this.HcpDetailsService.approve_hcp(hcp_id,this.options).subscribe((response)=>{
+      if (response['message']) {
+        this.toastr.success(response['message'], 'Success!', { timeOut: 3000 });
+      }
+      this.render();
+    },(err)=>{
+      if (err['error'].message) {
+        this.toastr.error(err['error']['message'], 'Error!', { timeOut: 3000 });
+      }
+    });
+  }
+
+  render(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
   }
 
 }

@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-lg-12">
+      <div class="card">
+          <div class="card-body">
+              <h4 class="card-title">HCP Detail</h4>
+              <div class="spinner" *ngIf="is_spinner==true; else datacontainer">
+                  <div class="double-bounce1"></div>
+                  <div class="double-bounce2"></div>
+                </div>
+              <ng-template #datacontainer>
+                <div  *ngIf="hcpdata!=null;else notfound">
+                  <div class="row" >
+                    <div> Name :- </div><div>{{hcpdata.first_name}} {{hcpdata.last_name}}</div>
+                  </div>
+                  <div class="row">
+                    <div> Email :- </div><div>{{hcpdata.email}}</div>
+                  </div>
+                  <div class="row">
+                    <div> Phone :- </div><div>{{hcpdata.phone_number}}</div>
+                  </div>
+                  <div class="row">
+                    <div> Degree :- </div><div>{{hcpdata.degree}}</div>
+                  </div>
+                  <div class="row">
+                    <div> Speciality :- </div><div>{{hcpdata.speciality}}</div>
+                  </div>
+                </div>
+                <ng-template #notfound>
+                  <div class="row"> No Data Found !</div>
+                </ng-template>
+              </ng-template>
+          </div>
+      </div>
+  </div>
+</div>
