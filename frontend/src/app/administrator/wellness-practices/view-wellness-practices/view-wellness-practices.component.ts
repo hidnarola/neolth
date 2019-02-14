@@ -81,15 +81,16 @@ export class ViewWellnessPracticesComponent implements OnInit {
 
   ngOnInit() {
     const that = this;
+
     this.dtOptions = {
       // pagingType: 'full_numbers',
       pageLength: 10,
       serverSide: true,
       processing: true,
       stateSave: false,
-      // "language": {
-      //   "processing": "<div><img class='table-loader' src='assets/img/svg/table_loader.svg'></div>"
-      // },
+      //  "language": {
+      //    "processing": "<div><img class='table-loader' src='assets/img/svg/table_loader.svg'></div>"
+      //  },
       ordering: true,
       order: [[0, 'desc']],
       ajax: (dataTablesParameters: any, callback) => {

@@ -18,15 +18,17 @@ export class AuthService implements CanActivate {
     //console.log(admin);return false;
     if (admin!=null) {
       if (state.url.includes('/admin-panel/admin-login')) {
-        //this.router.navigate(['/admin-panel/dashboard']);
-        console.log(state.url.includes('/admin-panel/admin-login'));
+        this.router.navigate(['/admin-panel/dashboard']);
+        //console.log(state.url.includes('/admin-panel/admin-login'));
       }
-      return true;
+      //return true;
     }
     else{
-      
-      this.router.navigate(['/admin-panel/admin-login']);
+      if(!state.url.includes('/admin-panel/admin-login'))
+      {
+        this.router.navigate(['/admin-panel/admin-login']);
+      }
     }
-    return false;
+    return true;
   }
 }

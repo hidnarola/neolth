@@ -19,11 +19,11 @@
               <div class="dropdown-divider"></div>
               <a href="#" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
               <div class="dropdown-divider"></div>
-              <a href="login.html" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
+              <a (click)='onLogout()' style="cursor:pointer;" title="Logout" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
           </div>
       </a>
       <a href="#" class="" data-toggle="tooltip" title="Email"><i class="mdi mdi-gmail"></i></a>
-      <a href="#" class="" data-toggle="tooltip" title="Logout"><i class="mdi mdi-power"></i></a>
+      <a (click)='onLogout()' style="cursor:pointer;" class="" data-toggle="tooltip" title="Logout"><i class="mdi mdi-power"></i></a>
   </div>
 </div>
 <!-- End User profile text-->

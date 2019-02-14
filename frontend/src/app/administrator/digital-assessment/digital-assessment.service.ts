@@ -10,4 +10,9 @@ export class DigitalAssessmentService {
        //console.log(data);
        return this.http.post(`${this.api_host}admin/question/get`,data,header);
    }
+
+   deleteDigitalAssessment(data:any,header)
+   {
+        return this.http.post(`${this.api_host}admin/question/delete`,data,header);
+   }
 }

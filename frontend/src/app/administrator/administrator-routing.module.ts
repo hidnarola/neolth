@@ -7,6 +7,7 @@ const routes: Routes = [
   
   {
     path:'',component:LayoutsComponent,
+    canActivate:[AuthService],
     children:[
       { path: '', redirectTo: '/admin-panel/admin-login', pathMatch: 'full' },
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
@@ -17,7 +18,7 @@ const routes: Routes = [
       { path: 'statistics', loadChildren: './statistics/statistics.module#StatisticsModule' },
     ]
   },
-  { path: 'admin-login', loadChildren: './admin-login/admin-login.module#AdminLoginModule' },
+  { path: 'admin-login', canActivate: [AuthService], loadChildren: './admin-login/admin-login.module#AdminLoginModule' },
 ];
 
 @NgModule({

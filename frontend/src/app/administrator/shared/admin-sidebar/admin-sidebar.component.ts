@@ -1,10 +1,12 @@
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit, Inject } from '@angular/core';
 import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { ROUTES } from './menu-items';
 import { RouteInfo } from "./admin-sidebar.metadata";
 import { Router, ActivatedRoute } from "@angular/router";
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import * as $ from 'jquery';
+import { LOCAL_STORAGE } from '@ng-toolkit/universal';
+import { ToastrService } from 'ngx-toastr';
 //declare var $: any;
 
 @Component({
@@ -37,7 +39,7 @@ export class AdminSidebarComponent implements OnInit {
   }
 
   constructor(private modalService: NgbModal, private router: Router,
-      private route: ActivatedRoute) {
+      private route: ActivatedRoute,@Inject(LOCAL_STORAGE) private localStorage: any,private toastr: ToastrService) {
       
   } 
   
@@ -54,8 +56,14 @@ export class AdminSidebarComponent implements OnInit {
                   $("#main-wrapper").addClass("mini-sidebar");
               }
           });
-  
       });
-      
   }
+
+  onLogout()
+  {
+    this.localStorage.removeItem("admin");
+    this.toastr.success('Logged off successfully', 'Success!', { timeOut: 3000 });
+    this.router.navigate(['/admin-panel/admin-login']);
+  }
+
 }

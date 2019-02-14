@@ -1,8 +1,10 @@
-import { WINDOW } from '@ng-toolkit/universal';
+import { WINDOW, LOCAL_STORAGE } from '@ng-toolkit/universal';
 import { Component, OnInit,AfterViewInit , Inject} from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbPanelChangeEvent, NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar'; 
 import * as $ from 'jquery';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-header',
@@ -13,7 +15,8 @@ export class AdminHeaderComponent implements AfterViewInit {
 
   name:string;
   public config: PerfectScrollbarConfigInterface = {};
-  constructor(@Inject(WINDOW) private window: Window, private modalService: NgbModal) {
+  constructor(@Inject(WINDOW) private window: Window, private modalService: NgbModal,private router: Router,
+  private route: ActivatedRoute,@Inject(LOCAL_STORAGE) private localStorage: any,private toastr: ToastrService) {
     
   }
 
@@ -92,5 +95,12 @@ export class AdminHeaderComponent implements AfterViewInit {
       
       
       $("body").trigger("resize");
+  }
+
+  onLogout()
+  {
+    this.localStorage.removeItem("admin");
+    this.toastr.success('Logged off successfully', 'Success!', { timeOut: 3000 });
+    this.router.navigate(['/admin-panel/admin-login']);
   }
 }

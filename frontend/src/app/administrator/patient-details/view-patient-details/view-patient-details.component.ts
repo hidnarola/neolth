@@ -4,6 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { PatientDetailsService } from '../patient-details.service';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 declare var require: any;
 const data: any = require('./patient-details-data.json');
@@ -32,7 +33,7 @@ export class ViewPatientDetailsComponent implements OnInit {
       'x-access-token': this.admin.token
     });
     options = { headers: this.headers };
-    constructor(private PatientDetailsService: PatientDetailsService, @Inject(LOCAL_STORAGE) private localStorage: any) {
+    constructor(private PatientDetailsService: PatientDetailsService, @Inject(LOCAL_STORAGE) private localStorage: any,private toastr: ToastrService) {
   
   //     this.PatientDetailsService.getAllPatientData(null,options).subscribe((response)=>{
   //       console.log(response);
@@ -122,10 +123,46 @@ export class ViewPatientDetailsComponent implements OnInit {
         { data: 'last_name' },
         { data: 'email' },
         { data: 'phone_number' },
-        //{ data: 'status' },
-        //{ data: 'zipcode' }
+        { data: 'status'}
+        
       ]
     };
+  }
+
+  Disable_Patient(e,id:string)
+  {
+    var hcp_id = {"id":id};
+    this.PatientDetailsService.disable_hcp(hcp_id,this.options).subscribe((response)=>{
+      if (response['message']) {
+        this.toastr.success(response['message'], 'Success!', { timeOut: 3000 });
+      }
+      this.render();
+    },(err)=>{
+      if (err['error'].message) {
+        this.toastr.error(err['error']['message'], 'Error!', { timeOut: 3000 });
+      }
+    });
+  }
+
+  // Active_HCP(e,id:string)
+  // {
+  //   var hcp_id = {"id":id};
+  //   this.HcpDetailsService.approve_hcp(hcp_id,this.options).subscribe((response)=>{
+  //     if (response['message']) {
+  //       this.toastr.success(response['message'], 'Success!', { timeOut: 3000 });
+  //     }
+  //     this.render();
+  //   },(err)=>{
+  //     if (err['error'].message) {
+  //       this.toastr.error(err['error']['message'], 'Error!', { timeOut: 3000 });
+  //     }
+  //   });
+  // }
+
+  render(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
   }
 
 }

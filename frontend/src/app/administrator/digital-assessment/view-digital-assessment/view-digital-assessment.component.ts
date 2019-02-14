@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject, ElementRef, AfterViewInit } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { LOCAL_STORAGE } from '@ng-toolkit/universal';
 import { DigitalAssessmentService } from '../digital-assessment.service';
+import * as $ from 'jquery';
+import { ToastrService } from 'ngx-toastr';
 
 declare var require: any;
 const data: any = require('./digital-assessment-data.json');
@@ -13,7 +15,12 @@ const data: any = require('./digital-assessment-data.json');
   templateUrl: './view-digital-assessment.component.html',
   styleUrls: ['./view-digital-assessment.component.scss']
 })
-export class ViewDigitalAssessmentComponent implements OnInit {
+export class ViewDigitalAssessmentComponent implements OnInit,AfterViewInit {
+
+  disableDeleteBtn:boolean = true;
+
+  @ViewChild('deleteBtn') deleteBtn:ElementRef;
+
   @ViewChild(DataTableDirective)
   dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
@@ -33,7 +40,7 @@ export class ViewDigitalAssessmentComponent implements OnInit {
      });
     options = { headers: this.headers };
     
-    constructor(private DigitalAssessmentService : DigitalAssessmentService,@Inject(LOCAL_STORAGE) private localStorage: any) {
+    constructor(private DigitalAssessmentService : DigitalAssessmentService,@Inject(LOCAL_STORAGE) private localStorage: any,private toastr: ToastrService) {
   
       /*this.HcpDetailsService.getAllHcpData().subscribe((response)=>{
         //console.log(response);
@@ -123,6 +130,87 @@ export class ViewDigitalAssessmentComponent implements OnInit {
         { data: 'is_del' },
       ]
     };
+
+  }
+
+  ngAfterViewInit()
+  {
+    $('#checkall').on('click',function(){
+      if($(this).prop('checked')==true)
+      {
+        $('.data_checkbox').prop('checked',true);
+      }
+      else
+      {
+        $('.data_checkbox').prop('checked',false);
+      }
+
+      if($('.data_checkbox:checkbox:checked').length>0)
+      {
+        
+        $('#deleteBtn').prop('disabled',false);
+      }
+      else{
+        $('#deleteBtn').prop('disabled',true);
+      }
+    });
+
+    $(document).on('click','.data_checkbox',function(){
+      if($('.data_checkbox').length == $('.data_checkbox:checkbox:checked').length)
+      {
+        $('#checkall').prop('checked',true);
+      }
+      else
+      {
+        $('#checkall').prop('checked',false);
+      }
+
+      if($('.data_checkbox:checkbox:checked').length>0)
+      {
+        
+        $('#deleteBtn').prop('disabled',false);
+      }
+      else{
+        $('#deleteBtn').prop('disabled',true);
+      }
+
+    });
+  }
+
+  deleteSelected(e)
+  {
+    var checkbox = $('.data_checkbox:checkbox:checked');
+    
+    var arr:any = [];
+    checkbox.each(function(){
+      arr.push($(this).val());
+    });
+    
+    var post_data = {id:arr};
+    
+    this.DigitalAssessmentService.deleteDigitalAssessment(post_data,this.options).subscribe((response)=>{
+    
+      if(response['data'] && response['message'])
+      {
+        this.toastr.success(response['message'],'Success!',{timeOut:3000});
+        this.render();
+      }
+      else
+      {
+        this.toastr.error('Something Went Wrong!','Error!',{timeOut:3000});
+        this.render();
+      }
+    },(err)=>{
+      this.toastr.error('Something Went Wrong!','Error!',{timeOut:3000});
+      this.render();
+    }
+    );
+  }
+
+  render(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
   }
 
 }
