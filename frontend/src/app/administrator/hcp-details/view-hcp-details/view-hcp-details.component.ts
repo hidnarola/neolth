@@ -87,7 +87,7 @@ export class ViewHcpDetailsComponent implements OnInit {
       pageLength: 10,
       serverSide: true,
       processing: true,
-      stateSave: false,
+      stateSave: true,
       // "language": {
       //   "processing": "<div><img class='table-loader' src='assets/img/svg/table_loader.svg'></div>"
       // },

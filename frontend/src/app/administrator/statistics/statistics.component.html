@@ -1,1 +1,70 @@
-<h1>Statistics</h1>
+<div class="row">
+    <div class="col-12">
+        <!-- You can find this in the dashboard-component -->
+        <div class="card-group m-b-30">
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- <h2 class="m-b-0"><i class="mdi mdi-briefcase-check text-info"></i></h2> -->
+                            <h2>Total Registered HCP</h2>
+                            <h4 class="" *ngIf="total_register_hcp==null; else elseTotalRegisterHCP">No HCP have been Registered Yet.</h4>
+                            <ng-template #elseTotalRegisterHCP>
+                                <h4 class="">{{total_register_hcp}}</h4>
+                            </ng-template>
+                            <!-- <h6 class="card-subtitle">New Projects</h6></div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- <h2 class="m-b-0"><i class="mdi mdi-briefcase-check text-info"></i></h2> -->
+                            <h2>Total Registered Patient</h2>
+                            <h4 class="" *ngIf="total_register_hcp==null; else elseTotalRegisterPatient">No Patient have been Registered Yet.</h4>
+                            <ng-template #elseTotalRegisterPatient>
+                                <h4 class="">{{total_register_patient}}</h4>
+                            </ng-template>
+                            <!-- <h6 class="card-subtitle">New Projects</h6></div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- <h2 class="m-b-0"><i class="mdi mdi-briefcase-check text-info"></i></h2> -->
+                            <h2>Total Paying Patient</h2>
+                            <h4 class="" *ngIf="total_register_paying_patient==null; else elseTotalPayingPatient">No Paying Patient have been Available Yet.</h4>
+                            <ng-template #elseTotalPayingPatient>
+                                <h4 class="">{{total_register_paying_patient}}</h4>
+                            </ng-template>
+                            <!-- <h6 class="card-subtitle">New Projects</h6></div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <h2>Total Duration of Patient</h2>
+                                <h4 class="" *ngIf="total_duration_of_patient==null; else elseTotalDurationofPatient">No Duration Patient have been Available Yet.</h4>
+                                <ng-template #elseTotalDurationofPatient>
+                                    <h4 class="">{{total_duration_of_patient}}</h4>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+        </div>
+    </div>
+</div>

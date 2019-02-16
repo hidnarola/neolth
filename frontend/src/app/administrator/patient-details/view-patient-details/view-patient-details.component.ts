@@ -114,18 +114,7 @@ export class ViewPatientDetailsComponent implements OnInit {
             });
           });
         }, 1000);
-      },
-      columnDefs: [
-        { orderable: false, "targets": 0 }
-      ],
-      columns: [
-        { data: 'first_name' },
-        { data: 'last_name' },
-        { data: 'email' },
-        { data: 'phone_number' },
-        { data: 'status'}
-        
-      ]
+      }
     };
   }
 

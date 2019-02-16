@@ -120,7 +120,7 @@ export class ViewWellnessPracticesComponent implements OnInit {
         { orderable: false, "targets": 0 }
       ],
       columns: [
-        { data: 'name' },
+        { data: 'name'},
         { data: 'practice_type' },
         { data: 'practice_content' },
       ]
