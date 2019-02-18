@@ -15,6 +15,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./admin-sidebar.component.scss']
 })
 export class AdminSidebarComponent implements OnInit {
+    admin_data:any;
+    
   showMenu: string = '';
   showSubMenu: string = '';
   public sidebarnavItems: any[];
@@ -40,7 +42,7 @@ export class AdminSidebarComponent implements OnInit {
 
   constructor(private modalService: NgbModal, private router: Router,
       private route: ActivatedRoute,@Inject(LOCAL_STORAGE) private localStorage: any,private toastr: ToastrService) {
-      
+        this.admin_data = JSON.parse(atob(this.localStorage.getItem('admin')));
   } 
   
   ngOnInit() {

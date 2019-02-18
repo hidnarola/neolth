@@ -14,11 +14,14 @@ import { ToastrService } from 'ngx-toastr';
 export class AdminHeaderComponent implements AfterViewInit {
 
   name:string;
+  admin_data:any
   public config: PerfectScrollbarConfigInterface = {};
   constructor(@Inject(WINDOW) private window: Window, private modalService: NgbModal,private router: Router,
   private route: ActivatedRoute,@Inject(LOCAL_STORAGE) private localStorage: any,private toastr: ToastrService) {
     
+    this.admin_data = JSON.parse(atob(this.localStorage.getItem('admin')));
   }
+
 
   // This is for Notifications
   notifications: Object[] = [{

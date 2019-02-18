@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { WellnessPracticesService } from '../wellness-practices.service';
 import { LOCAL_STORAGE } from '@ng-toolkit/universal';
 import { HttpHeaders } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 declare var require: any;
 const data: any = require('./wellness-practices-data.json');
@@ -33,7 +34,7 @@ export class ViewWellnessPracticesComponent implements OnInit {
      });
     options = { headers: this.headers };
     
-    constructor(private WellnessPracticesService : WellnessPracticesService,@Inject(LOCAL_STORAGE) private localStorage: any) {
+    constructor(private WellnessPracticesService : WellnessPracticesService,@Inject(LOCAL_STORAGE) private localStorage: any,private toastr:ToastrService) {
   
       /*this.HcpDetailsService.getAllHcpData().subscribe((response)=>{
         //console.log(response);
@@ -125,5 +126,29 @@ export class ViewWellnessPracticesComponent implements OnInit {
         { data: 'practice_content' },
       ]
     };
+  }
+
+  DeleteWellnessPractices(e,id:any)
+  {
+    var post_data = {'id':id};
+    this.WellnessPracticesService.DeleteWellnessPractices(post_data,this.options).subscribe((response)=>{
+      if(response['message'] && response['status']==1)
+      {
+        this.toastr.success('Success!','Record Succefully Deleted!',{timeOut: 3000});
+      }
+      else
+      {
+        this.toastr.error('Error!','Something Went Wrong!',{timeOut: 3000});
+      }
+    },(err)=>{
+      this.toastr.error('Error!','Something Went Wrong!',{timeOut: 3000});
+    });
+    this.render();
+  }
+  
+  render(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
   }
 }

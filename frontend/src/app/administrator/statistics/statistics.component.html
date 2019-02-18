@@ -68,3 +68,40 @@
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Patient Duration</h4>
+  
+                <table id='table' datatable [dtOptions]="dtOptions" class="row-border hover" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>PATIENT NAME</th>
+                      <th>PATIENT EMAIL</th>
+                      <th>PATIENT DURATION</th>
+                      <!-- <th>ACTION</th> -->
+                    </tr>
+                  </thead>
+  
+                  <tbody *ngIf="patient_duration_data!=null;">
+                    <tr *ngFor="let patient_duration_info of patient_duration_data; let i = index;">
+                      <td>{{ i+1 }}</td>
+                      <td>{{ patient_duration_info.first_name }} {{patient_duration_info.last_name}}</td>
+                      <td>{{ patient_duration_info.email }}</td>
+                      <td>{{ patient_duration_info.duration }}</td>
+                      <td><a style="color:red;cursor: pointer;" ><i class="fa fa-trash"></i></a></td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="patient_duration_data?.length == 0">
+                    <tr>
+                      <td colspan="7" class="no-data-available">No data!</td>
+                    </tr>
+                  <tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>

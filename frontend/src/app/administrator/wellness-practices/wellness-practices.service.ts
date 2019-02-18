@@ -10,4 +10,14 @@ export class WellnessPracticesService {
        //console.log(data);
        return this.http.post(`${this.api_host}admin/wellness_practices`,data,header);
    }
+
+   saveWellnessPractice(data: any,header)
+   {
+    return this.http.post(`${this.api_host}admin/wellness_practice`,data,header);
+   }
+
+   DeleteWellnessPractices(data: any,header)
+   {
+    return this.http.post(`${this.api_host}admin/delete_wellness_practice`,data,header);
+   }
 }
