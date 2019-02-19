@@ -151,4 +151,23 @@ export class ViewWellnessPracticesComponent implements OnInit {
       dtInstance.draw();
     });
   }
+
+  
+  DisabledWellnessPractice(e,id:any)
+  {
+    var post_data = {'id':id};
+    this.WellnessPracticesService.DisableWellnessPractices(post_data,this.options).subscribe((response)=>{
+      if(response['message'] && response['status']==1)
+      {
+        this.toastr.success('Success!','Record Succefully Disable!',{timeOut: 3000});
+      }
+      else
+      {
+        this.toastr.error('Error!','Something Went Wrong!',{timeOut: 3000});
+      }
+    },(err)=>{
+      this.toastr.error('Error!','Something Went Wrong!',{timeOut: 3000});
+    });
+    this.render();
+  }
 }

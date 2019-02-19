@@ -60,7 +60,7 @@
                     <td>{{ wellnesspractices_datas.name }}</td>
                     <td>{{ wellnesspractices_datas.practice_type.join(',') }}</td>
                     <td>{{ wellnesspractices_datas.practice_content }}</td>
-                    <td><a style="color:red;cursor: pointer;" (click)="DeleteWellnessPractices($event,wellnesspractices_datas._id)"><i class="fa fa-trash"></i></a></td>
+                    <td><a style="color:red;cursor: pointer;" (click)="DeleteWellnessPractices($event,wellnesspractices_datas._id)"><i class="fa fa-trash"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:blue;cursor: pointer;" routerLink="/admin-panel/wellness-practices/add/{{wellnesspractices_datas._id}}"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:red;cursor: pointer;" (click)="DisabledWellnessPractice($event,wellnesspractices_datas._id)"><i class="fa fa-power-off"></i></a></td>
                   </tr>
                 </tbody>
                 <tbody *ngIf="wellnesspractices_data?.length == 0">

@@ -20,4 +20,14 @@ export class WellnessPracticesService {
    {
     return this.http.post(`${this.api_host}admin/delete_wellness_practice`,data,header);
    }
+
+   getSingleWellnessPractice(id:string,header)
+   {
+    return this.http.get(`${this.api_host}admin/wellness_practices/${id}`,header);
+   }
+
+   DisableWellnessPractices(data:any,header)
+   {
+    return this.http.post(`${this.api_host}admin/disable_wellness_practice`,data,header);
+   }
 }

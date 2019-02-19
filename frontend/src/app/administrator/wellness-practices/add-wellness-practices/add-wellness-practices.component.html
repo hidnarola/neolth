@@ -5,7 +5,7 @@
             <div class="card-body">
                 <h4 class="card-title">Add New Wellness Practices</h4>
                 <!-- <h6 class="card-subtitle"> All with bootstrap element classies </h6> -->
-                <form class="m-t-30" [formGroup]="wellness_practices_form">
+                <form class="m-t-30" [formGroup]="wellness_practices_form" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Practice Name</label>
                         <input type="text" class="form-control" id="exampleInputEmail1" name="name" formControlName="name" [(ngModel)]="wellness_practices_data.name" aria-describedby="emailHelp" placeholder="Enter Practice Name">
@@ -20,10 +20,7 @@
                             [placeholder]="'Practice Type'"
                             [data]="practice_type_dropdown"
                             [settings]="DropdownSetting"
-                            (onSelect)="onPracticeTypeSelect($event)"
-                            (onSelectAll)="onPracticeTypeSelectAll($event)"
-                            (onDeSelect)="onPracticeTypeDeSelect($event)" 
-                            (onDeSelectAll)="onPracticeTypeDeSelectAll($event)" 
+                            [(ngModel)] = "wellness_practices_data.practice_type"
                             name="practice_type"
                             formControlName="practice_type"
                             >
@@ -47,10 +44,7 @@
                             [placeholder]="'Matching Symptom'"
                             [data]="matching_symptom_dropdown"
                             [settings]="DropdownSetting"
-                            (onSelect)="onMatchingSymptomSelect($event)"
-                            (onSelectAll)="onMatchingSymptomSelectAll($event)"
-                            (onDeSelect)="onMatchingSymptomDeSelect($event)" 
-                            (onDeSelectAll)="onMatchingSymptomDeSelectAll($event)" 
+                            [(ngModel)] = "wellness_practices_data.matching_symptom"
                             name="matching_symptom"
                             formControlName="matching_symptom"
                             >
@@ -66,10 +60,7 @@
                             [placeholder]="'Matching Stress'"
                             [data]="matching_stress_dropdown"
                             [settings]="DropdownSetting"
-                            (onSelect)="onMatchingStressSelect($event)"
-                            (onSelectAll)="onMatchingStressSelectAll($event)"
-                            (onDeSelect)="onMatchingStressDeSelect($event)" 
-                            (onDeSelectAll)="onMatchingStressDeSelectAll($event)" 
+                            [(ngModel)] = "wellness_practices_data.matching_stress"
                             name="matching_stress"
                             formControlName="matching_stress"
                             >
@@ -85,10 +76,7 @@
                             [placeholder]="'Matching Proficiency'"
                             [data]="matching_proficiency_dropdown"
                             [settings]="DropdownSetting"
-                            (onSelect)="onMatchingProficiencySelect($event)"
-                            (onSelectAll)="onMatchingProficiencySelectAll($event)"
-                            (onDeSelect)="onMatchingProficiencyDeSelect($event)" 
-                            (onDeSelectAll)="onMatchingProficiencyDeSelectAll($event)" 
+                            [(ngModel)] = "wellness_practices_data.matching_proficiency"
                             name="matching_proficiency"
                             formControlName="matching_proficiency"
                             >
@@ -104,10 +92,7 @@
                             [placeholder]="'Matching Diagnosis'"
                             [data]="matching_diagnosis_dropdown"
                             [settings]="DropdownSetting"
-                            (onSelect)="onMatchingDignosisSelect($event)"
-                            (onSelectAll)="onMatchingDignosisSelectAll($event)"
-                            (onDeSelect)="onMatchingDignosisDeSelect($event)" 
-                            (onDeSelectAll)="onMatchingDignosisDeSelectAll($event)" 
+                            [(ngModel)] = "wellness_practices_data.matching_diagnosis" 
                             name="matching_diagnosis"
                             formControlName="matching_diagnosis"
                             >
@@ -124,7 +109,9 @@
                         </div>
                     </div>
     
-                    <button type="submit" class="btn btn-primary" (click)="submit_form(wellness_practices_form.valid)" [disabled] = 'show_spinner'>Submit <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
+                    <button type="submit" class="btn btn-primary" (click)="submit_form(wellness_practices_form.valid)" *ngIf="!is_edit" [disabled] = 'show_spinner'>Submit <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
+
+                    <button type="submit" class="btn btn-primary" (click)="submit_form(wellness_practices_form.valid)" *ngIf="is_edit" [disabled] = 'show_spinner'>Save <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
                 </form>
             </div>
         </div>

@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { WellnessPracticesService } from '../wellness-practices.service';
 import { HttpHeaders } from '@angular/common/http';
 import { LOCAL_STORAGE } from '@ng-toolkit/universal';
+import { ToastrService } from 'ngx-toastr';
+import { Route,Router,ActivatedRoute } from '@angular/router';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) {}
@@ -18,6 +20,10 @@ export class AddWellnessPracticesComponent implements OnInit {
   //selectedFile: ImageSnippet;
   fileToUpload: File = null;
   formData = new FormData();
+  is_edit:boolean = false;
+
+  update_id:string;
+  single_wellness_practice:any;
 
   matching_symptom_dropdown = [];
   matching_symptom_selected_items = [];
@@ -34,25 +40,18 @@ export class AddWellnessPracticesComponent implements OnInit {
   wellness_practices_form_validation: boolean = false;
   show_spinner:boolean = false;
   
-  wellness_practices_data:any = {
-    "practice_type":[],
-    "practice_content":'',
-    "matching_symptom":[],
-    "matching_stress":[],
-    "matching_proficiency":[],
-    "matching_diagnosis":[],
-  };
+  wellness_practices_data:any = {};
 
   DropdownSetting = {};
   admin = JSON.parse(atob(this.localStorage.getItem('admin')));
 
   headers = new HttpHeaders({
-    'Content-Type':  'application/x-www-form-urlencoded',
+    //'Content-Type':  'application/x-www-form-urlencoded',
     'x-access-token': this.admin.token
   });
  options = { headers: this.headers };
   
-  constructor(private fb: FormBuilder,private WellnessPracticesService:WellnessPracticesService,@Inject(LOCAL_STORAGE) private localStorage: any) {
+  constructor(private fb: FormBuilder,private WellnessPracticesService:WellnessPracticesService,@Inject(LOCAL_STORAGE) private localStorage: any,private toastr:ToastrService,private router:Router,private route:ActivatedRoute) {
     this.wellness_practices_form = this.fb.group({
       name: ['', [Validators.required]],
       practice_type: ['', [Validators.required]],
@@ -63,40 +62,50 @@ export class AddWellnessPracticesComponent implements OnInit {
       matching_diagnosis: ['', [Validators.required]],
       tech_type:['',[Validators.required]]
     });
+
+    this.route.params.subscribe(params=>{
+      this.update_id = params['id'];
+    });
+
+    if(this.update_id!=undefined)
+    {
+      this.is_edit = true;
+      this.WellnessPracticesService.getSingleWellnessPractice(this.update_id,this.options).subscribe((response)=>{
+        if(response['status']==1 && response['message'])
+        {
+          this.wellness_practices_data.name = response['data'].name;
+          this.wellness_practices_data.practice_type = response['data'].practice_type;
+          this.wellness_practices_data.practice_content = response['data'].practice_content;
+          this.wellness_practices_data.matching_symptom = response['data'].matching_symptom;
+          this.wellness_practices_data.matching_stress = response['data'].matching_stress;
+          this.wellness_practices_data.matching_proficiency = response['data'].matching_proficiency;
+          this.wellness_practices_data.matching_diagnosis = response['data'].matching_diagnosis;
+
+        }
+        else{
+          this.toastr.error("Error!","Something Went Wrong!",{timeOut: 3000});
+        }
+      },(err)=>{
+        this.toastr.error("Error!","Something Went Wrong!",{timeOut: 3000});
+      });
+    }
   }
   
 
   ngOnInit() {
 
-    this.matching_symptom_dropdown = [
-      { item_id: 1, item_text: 'avoidance_gen' },
-      { item_id: 2, item_text: 'anger' },
-      { item_id: 3, item_text: 'appetite' },
-    ];
+    this.matching_symptom_dropdown = ['avoidance_gen' ,'anger' ,'appetite'];
 
-    this.matching_stress_dropdown = [
-      { item_id: 1, item_text: 'Remunaration' },
-    ];
+    this.matching_stress_dropdown = ['Remunaration'];
 
-    this.matching_proficiency_dropdown = [
-      { item_id: 1, item_text: 'beginner' },
-    ];
+    this.matching_proficiency_dropdown = ['beginner'];
 
-    this.matching_diagnosis_dropdown = [
-      { item_id: 1, item_text: 'GAD' },
-      { item_id: 2, item_text: 'agoraphobia' },
-      { item_id: 3, item_text: 'anorexia' }
-    ];
+    this.matching_diagnosis_dropdown = ['GAD','agoraphobia','anorexia'];
 
-    this.practice_type_dropdown = [
-      { item_id: 1, item_text: 'jornaling' },
-      { item_id: 2, item_text: 'breathwork' },
-    ];
+    this.practice_type_dropdown = ['jornaling','breathwork'];
   
     this.DropdownSetting = {
       singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 3,
@@ -111,18 +120,26 @@ export class AddWellnessPracticesComponent implements OnInit {
 
     if(flag)
     {
-      this.show_spinner = true;
+      //this.show_spinner = true;
+      let w_data = this.wellness_practices_data;
       //console.log(this.wellness_practices_data);
-      for(let key in this.wellness_practices_data)
-      {
-        var value = this.wellness_practices_data[key];
-        this.formData.append(key, value);
+      for(let key in this.wellness_practices_data){
+        this.wellness_practices_data[key] = JSON.stringify(this.wellness_practices_data[key]);
       }
 
-      this.WellnessPracticesService.saveWellnessPractice(this.formData,this.options).subscribe((response)=>{
-        
+      this.WellnessPracticesService.saveWellnessPractice(this.wellness_practices_data,this.options).subscribe((response)=>{
+        if(response['message'] && response['data']['status']==1)
+        {
+          this.toastr.success('Success!','Recored Successfully Inserted!',{timeOut: 3000});
+          this.router.navigate(['admin-panel/wellness-practices/view']);
+        }
+        else{
+          this.toastr.success('Error!','Something Went Wrong!',{timeOut: 3000});
+          this.router.navigate(['admin-panel/wellness-practices/add']);
+        }
       },(err)=>{
-        
+        this.toastr.success('Error!','Something Went Wrong!',{timeOut: 3000});
+        this.router.navigate(['admin-panel/wellness-practices/add']);
       });
     }
   }
@@ -140,160 +157,9 @@ export class AddWellnessPracticesComponent implements OnInit {
 
     // reader.readAsDataURL(file);
     //console.log(files);
-    this.wellness_practices_data.tech_type = files;
+    this.wellness_practices_data.files = [];
+    this.wellness_practices_data.files['tech_type'] = files;
     //this.wellness_practices_data.tech_type = this.fileToUpload;
-  }
-  
-  onPracticeTypeSelect(item: any) {
-    //console.log(item);
-    if(this.wellness_practices_data.practice_type.indexOf(item.item_text)==-1)
-     {
-       this.wellness_practices_data.practice_type.push(item.item_text);
-     }
-  }
-  onPracticeTypeSelectAll(items: any) {
-    //console.log(items);
-    items.map((res)=>{
-
-      if(this.wellness_practices_data.practice_type.indexOf(res.item_text)<0)
-     {
-       this.wellness_practices_data.practice_type.push(res.item_text);
-     }
-    });
-  }
-  onPracticeTypeDeSelect(item: any) {
-    //console.log(item);
-    if(this.wellness_practices_data.practice_type.indexOf(item.item_text)>-1)
-     {
-       var i = this.wellness_practices_data.practice_type.indexOf(item.item_text);
-       this.wellness_practices_data.practice_type.splice(i,1);
-     }
-  }
-  onPracticeTypeDeSelectAll(item: any){
-    //console.log(item);
-    this.wellness_practices_data.practice_type = [];
-
-  }
-
-  onMatchingSymptomSelect(item: any) {
-    //console.log(item);
-     if(this.wellness_practices_data.matching_symptom.indexOf(item.item_text)==-1)
-     {
-       this.wellness_practices_data.matching_symptom.push(item.item_text);
-     }
-  }
-  onMatchingSymptomSelectAll(items: any) {
-    //console.log(items);
-    items.map((res)=>{
-
-      if(this.wellness_practices_data.matching_symptom.indexOf(res.item_text)<0)
-      {
-       this.wellness_practices_data.matching_symptom.push(res.item_text);
-      }
-    });
-  }
-  onMatchingSymptomDeSelect(item: any) {
-    //console.log(item);
-    if(this.wellness_practices_data.matching_symptom.indexOf(item.item_text)>-1)
-     {
-       var i = this.wellness_practices_data.matching_symptom.indexOf(item.item_text);
-       this.wellness_practices_data.matching_symptom.splice(i,1);
-     }
-  }
-  onMatchingSymptomDeSelectAll(items: any){
-    //console.log(item);
-      this.wellness_practices_data.matching_symptom = [];
-  }
-
-  onMatchingStressSelect(item: any) {
-    //console.log(item);
-    if(this.wellness_practices_data.matching_stress.indexOf(item.item_text)==-1)
-     {
-       this.wellness_practices_data.matching_stress.push(item.item_text);
-     }
-  }
-  onMatchingStressSelectAll(items: any) {
-    //console.log(items);
-    items.map((res)=>{
-
-      if(this.wellness_practices_data.matching_stress.indexOf(res.item_text)<0)
-      {
-       this.wellness_practices_data.matching_stress.push(res.item_text);
-      }
-    });
-  }
-  onMatchingStressDeSelect(item: any) {
-    //console.log(item);
-    if(this.wellness_practices_data.matching_stress.indexOf(item.item_text)>-1)
-     {
-       var i = this.wellness_practices_data.matching_stress.indexOf(item.item_text);
-       this.wellness_practices_data.matching_stress.splice(i,1);
-     }
-  }
-  onMatchingStressDeSelectAll(items: any) {
-    //console.log(items);
-    this.wellness_practices_data.matching_stress = [];
-  }
-
-  onMatchingProficiencySelect(item: any) {
-    //console.log(item);
-    if(this.wellness_practices_data.matching_proficiency.indexOf(item.item_text)==-1)
-     {
-       this.wellness_practices_data.matching_proficiency.push(item.item_text);
-     }
-  }
-  onMatchingProficiencySelectAll(items: any) {
-    //console.log(items);
-    items.map((res)=>{
-
-      if(this.wellness_practices_data.matching_proficiency.indexOf(res.item_text)<0)
-      {
-       this.wellness_practices_data.matching_proficiency.push(res.item_text);
-      }
-    });
-  }
-  onMatchingProficiencyDeSelect(item: any) {
-    //console.log(item);
-    if(this.wellness_practices_data.matching_proficiency.indexOf(item.item_text)>-1)
-     {
-       var i = this.wellness_practices_data.matching_proficiency.indexOf(item.item_text);
-       this.wellness_practices_data.matching_proficiency.splice(i,1);
-     }
-  }
-  onMatchingProficiencyDeSelectAll(items: any) {
-    //console.log(items);
-    this.wellness_practices_data.matching_proficiency = [];
-  }
-
-  onMatchingDignosisSelect(item: any) {
-    //console.log(item);
-    if(this.wellness_practices_data.matching_diagnosis.indexOf(item.item_text)==-1)
-     {
-       this.wellness_practices_data.matching_diagnosis.push(item.item_text);
-     }
-  }
-  onMatchingDignosisSelectAll(items: any) {
-    //console.log(items);
-    items.map((res)=>{
-
-      if(this.wellness_practices_data.matching_diagnosis.indexOf(res.item_text)<0)
-      {
-       this.wellness_practices_data.matching_diagnosis.push(res.item_text);
-      }
-    });
-  }
-  onMatchingDignosisDeSelect(item: any) {
-    //console.log(item);
-    if(this.wellness_practices_data.matching_diagnosis.indexOf(item.item_text)>-1)
-     {
-       var i = this.wellness_practices_data.matching_diagnosis.indexOf(item.item_text);
-       this.wellness_practices_data.matching_diagnosis.splice(i,1);
-     }
-  }
-  onMatchingDignosisDeSelectAll(items: any) {
-    //console.log(items);
-    this.wellness_practices_data.matching_diagnosis = [];
-  }
-
+  }  
 
 }
