@@ -127,7 +127,6 @@ router.post("/wellness_practice", async (req, res) => {
                 } else {
                     res.json({ "message": "Wellness practices added successfully", "data": patient })
                 }
-
             });
     }
     else {

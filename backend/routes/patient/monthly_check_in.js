@@ -86,9 +86,7 @@ router.post("/", async (req, res) => {
             var delete_resp = await Answer.deleteMany({ "patient_id": req.userInfo.id, "question_id": a.question_id });
         }
         var health_resp = await common_helper.insertMany(Answer, answer);
-
         var practice_uniq = _.uniq(practiceArr);
-
         var tag_resp = await common_helper.update(Tag, { "patient_id": req.userInfo.id }, { $set: { "symptoms": symptomArr, "practice_type": practice_uniq } });
         if (tag_resp.status == 0) {
             logger.debug("Error = ", tag_resp.error);
