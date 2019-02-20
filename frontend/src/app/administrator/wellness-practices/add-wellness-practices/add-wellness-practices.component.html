@@ -5,21 +5,113 @@
             <div class="card-body">
                 <h4 class="card-title">Add New Wellness Practices</h4>
                 <!-- <h6 class="card-subtitle"> All with bootstrap element classies </h6> -->
-                <form class="m-t-30">
+                <form class="m-t-30" [formGroup]="wellness_practices_form" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                        <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                        <label for="exampleInputEmail1">Practice Name</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" name="name" formControlName="name" [(ngModel)]="wellness_practices_data.name" aria-describedby="emailHelp" placeholder="Enter Practice Name">
+                        <div class="cust_err_msg" *ngIf="wellness_practices_form_validation && !wellness_practices_form.controls['name'].valid">
+							<span *ngIf="wellness_practices_form.controls['name'].errors['required']" class="text-danger">This field is required.</span>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        <label for="exampleInputPassword1">Practice Type</label>
+                        <!-- <input type="text" class="form-control" name="practice_type" id="exampleInputPassword1" placeholder="Practice Type"> -->
+                        <ng-multiselect-dropdown
+                            [placeholder]="'Practice Type'"
+                            [data]="practice_type_dropdown"
+                            [settings]="DropdownSetting"
+                            [(ngModel)] = "wellness_practices_data.practice_type"
+                            name="practice_type"
+                            formControlName="practice_type"
+                            >
+                        </ng-multiselect-dropdown>
+                        <div class="cust_err_msg" *ngIf="wellness_practices_form_validation && !wellness_practices_form.controls['practice_type'].valid">
+							<span *ngIf="wellness_practices_form.controls['practice_type'].errors['required']" class="text-danger">This field is required.</span>
+                        </div>
                     </div>
-                    <div class="custom-control custom-checkbox mr-sm-2 m-b-15">
-                        <input type="checkbox" class="custom-control-input" id="checkbox0" value="check">
-                        <!-- <label class="custom-control-label" for="checkbox0">Check Me Out !</label> -->
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Practice Content</label>
+                        <input type="text" class="form-control" name="practice_content" [formControlName]="'practice_content'" [(ngModel)]="wellness_practices_data.practice_content" id="exampleInputPassword1" placeholder="Practice Content">
+                        <div class="cust_err_msg" *ngIf="wellness_practices_form_validation && !wellness_practices_form.controls['practice_content'].valid">
+                            <span *ngIf="wellness_practices_form.controls['practice_content'].errors['required']" class="text-danger">This field is required.</span>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Matching Symptom</label>
+                        <!-- <input type="text" class="form-control" name="matching_symptom" id="exampleInputPassword1" placeholder="Matching Symptom"> -->
+                        <ng-multiselect-dropdown
+                            [placeholder]="'Matching Symptom'"
+                            [data]="matching_symptom_dropdown"
+                            [settings]="DropdownSetting"
+                            [(ngModel)] = "wellness_practices_data.matching_symptom"
+                            name="matching_symptom"
+                            formControlName="matching_symptom"
+                            >
+                        </ng-multiselect-dropdown>
+                        <div class="cust_err_msg" *ngIf="wellness_practices_form_validation && !wellness_practices_form.controls['matching_symptom'].valid">
+							<span *ngIf="wellness_practices_form.controls['matching_symptom'].errors['required']" class="text-danger">This field is required.</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Matching Stress</label>
+                        <!-- <input type="text" class="form-control" name="matching_stress" id="exampleInputPassword1" placeholder="Matching Stress"> -->
+                        <ng-multiselect-dropdown
+                            [placeholder]="'Matching Stress'"
+                            [data]="matching_stress_dropdown"
+                            [settings]="DropdownSetting"
+                            [(ngModel)] = "wellness_practices_data.matching_stress"
+                            name="matching_stress"
+                            formControlName="matching_stress"
+                            >
+                        </ng-multiselect-dropdown>
+                        <div class="cust_err_msg" *ngIf="wellness_practices_form_validation && !wellness_practices_form.controls['matching_stress'].valid">
+							<span *ngIf="wellness_practices_form.controls['matching_stress'].errors['required']" class="text-danger">This field is required.</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Matching Proficiency</label>
+                        <!-- <input type="text" class="form-control" name="matching_proficiency" id="exampleInputPassword1" placeholder="Matching Proficiency"> -->
+                        <ng-multiselect-dropdown
+                            [placeholder]="'Matching Proficiency'"
+                            [data]="matching_proficiency_dropdown"
+                            [settings]="DropdownSetting"
+                            [(ngModel)] = "wellness_practices_data.matching_proficiency"
+                            name="matching_proficiency"
+                            formControlName="matching_proficiency"
+                            >
+                        </ng-multiselect-dropdown>
+                        <div class="cust_err_msg" *ngIf="wellness_practices_form_validation && !wellness_practices_form.controls['matching_proficiency'].valid">
+							<span *ngIf="wellness_practices_form.controls['matching_proficiency'].errors['required']" class="text-danger">This field is required.</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Matching Diagnosis</label>
+                        <!-- <input type="text" class="form-control" name="matching_diagnosis" id="exampleInputPassword1" placeholder="Matching Diagnosis"> -->
+                        <ng-multiselect-dropdown
+                            [placeholder]="'Matching Diagnosis'"
+                            [data]="matching_diagnosis_dropdown"
+                            [settings]="DropdownSetting"
+                            [(ngModel)] = "wellness_practices_data.matching_diagnosis" 
+                            name="matching_diagnosis"
+                            formControlName="matching_diagnosis"
+                            >
+                        </ng-multiselect-dropdown>
+                        <div class="cust_err_msg" *ngIf="wellness_practices_form_validation && !wellness_practices_form.controls['matching_diagnosis'].valid">
+							<span *ngIf="wellness_practices_form.controls['matching_diagnosis'].errors['required']" class="text-danger">This field is required.</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Tech Type</label>
+                        <input type="file" class="form-control" multiple name="tech_type" #imageInput [formControlName]="'tech_type'" id="exampleInputPassword1" (change)="processFile($event.target.files)">
+                        <div class="cust_err_msg" *ngIf="wellness_practices_form_validation && !wellness_practices_form.controls['tech_type'].valid">
+							<span *ngIf="wellness_practices_form.controls['tech_type'].errors['required']" class="text-danger">This field is required.</span>
+                        </div>
+                    </div>
+    
+                    <button type="submit" class="btn btn-primary" (click)="submit_form(wellness_practices_form.valid)" *ngIf="!is_edit" [disabled] = 'show_spinner'>Submit <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
+
+                    <button type="submit" class="btn btn-primary" (click)="submit_form(wellness_practices_form.valid)" *ngIf="is_edit" [disabled] = 'show_spinner'>Save <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
                 </form>
             </div>
         </div>

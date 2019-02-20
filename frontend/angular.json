@@ -27,6 +27,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/datatables.net-dt/css/jquery.dataTables.css",
               "./src/assets/scss/style.scss",
               "./node_modules/ngx-toastr/toastr.css"
             ],

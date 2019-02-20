@@ -4,12 +4,14 @@ import { CommonModule } from '@angular/common';
 import { StatisticsRoutingModule } from './statistics-routing.module';
 import { StatisticsComponent } from './statistics.component';
 import { StatisticsService } from './statistics.service';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [StatisticsComponent],
   imports: [
     CommonModule,
-    StatisticsRoutingModule
+    StatisticsRoutingModule,
+    DataTablesModule
   ],
   providers:[
     StatisticsService

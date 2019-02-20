@@ -10,4 +10,14 @@ export class PatientDetailsService {
     {
         return this.http.post(`${this.api_host}admin/patient`,data,headers);
     }
+
+    getPatientData(id:any,header)
+    {
+        return this.http.get(`${this.api_host}admin/patient/${id}`,header);
+    }
+
+    disable_hcp(id:any,header)
+    {
+        return this.http.put(`${this.api_host}admin/patient/deactive`,id,header);
+    }
 }

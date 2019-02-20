@@ -7,6 +7,7 @@ import { AddWellnessPracticesComponent } from './add-wellness-practices/add-well
 const routes: Routes = [
   { path: 'view', component: ViewWellnessPracticesComponent},
   { path: 'add', component: AddWellnessPracticesComponent},
+  { path: 'add/:id', component: AddWellnessPracticesComponent},
 ];
 
 @NgModule({

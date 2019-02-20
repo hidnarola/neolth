@@ -8,9 +8,10 @@ import { ViewPatientDetailsComponent } from './view-patient-details/view-patient
 import { AddPatientDetailsComponent } from './add-patient-details/add-patient-details.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { DataTablesModule } from 'angular-datatables';
+import { ViewPatientComponent } from './view-patient/view-patient.component';
 
 @NgModule({
-  declarations: [PatientDetailsComponent, ViewPatientDetailsComponent, AddPatientDetailsComponent],
+  declarations: [PatientDetailsComponent, ViewPatientDetailsComponent, AddPatientDetailsComponent, ViewPatientComponent],
   imports: [
     CommonModule,
     PatientDetailsRoutingModule,
