@@ -1,14 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators , FormControl } from '@angular/forms';
 import { WellnessPracticesService } from '../wellness-practices.service';
 import { HttpHeaders } from '@angular/common/http';
 import { LOCAL_STORAGE } from '@ng-toolkit/universal';
 import { ToastrService } from 'ngx-toastr';
 import { Route,Router,ActivatedRoute } from '@angular/router';
 
-class ImageSnippet {
-  constructor(public src: string, public file: File) {}
-}
 
 @Component({
   selector: 'app-add-wellness-practices',
@@ -17,12 +14,13 @@ class ImageSnippet {
 })
 export class AddWellnessPracticesComponent implements OnInit {
 
-  //selectedFile: ImageSnippet;
-  fileToUpload: File = null;
-  formData = new FormData();
+  fileformData: FormData = new FormData();
+  formData: FormData = new FormData();
+  file_name = 'Upload File';
   is_edit:boolean = false;
 
   update_id:string;
+
   single_wellness_practice:any;
 
   matching_symptom_dropdown = [];
@@ -38,11 +36,11 @@ export class AddWellnessPracticesComponent implements OnInit {
   
   wellness_practices_form: FormGroup;
   wellness_practices_form_validation: boolean = false;
-  show_spinner:boolean = false;
-  
-  wellness_practices_data:any = {};
 
+  show_spinner:boolean = false;
+  wellness_practices_data:any = {};
   DropdownSetting = {};
+
   admin = JSON.parse(atob(this.localStorage.getItem('admin')));
 
   headers = new HttpHeaders({
@@ -52,15 +50,16 @@ export class AddWellnessPracticesComponent implements OnInit {
  options = { headers: this.headers };
   
   constructor(private fb: FormBuilder,private WellnessPracticesService:WellnessPracticesService,@Inject(LOCAL_STORAGE) private localStorage: any,private toastr:ToastrService,private router:Router,private route:ActivatedRoute) {
+
     this.wellness_practices_form = this.fb.group({
-      name: ['', [Validators.required]],
-      practice_type: ['', [Validators.required]],
-      practice_content: ['', [Validators.required]],
-      matching_symptom: ['', [Validators.required]],
-      matching_stress: ['', [Validators.required]],
-      matching_proficiency: ['', [Validators.required]],
-      matching_diagnosis: ['', [Validators.required]],
-      tech_type:['',[Validators.required]]
+      name: [null, [Validators.required]],
+      practice_type: [null, [Validators.required]],
+      practice_content: [null, [Validators.required]],
+      matching_symptom: [null, [Validators.required]],
+      matching_stress: [null, [Validators.required]],
+      matching_proficiency: [null, [Validators.required]],
+      matching_diagnosis: [null, [Validators.required]]
+      //tech_type:['',[Validators.required]]
     });
 
     this.route.params.subscribe(params=>{
@@ -120,46 +119,97 @@ export class AddWellnessPracticesComponent implements OnInit {
 
     if(flag)
     {
-      //this.show_spinner = true;
-      let w_data = this.wellness_practices_data;
-      //console.log(this.wellness_practices_data);
+      this.show_spinner = true;
+      var wellness_practices_post_data:any = {};
+
       for(let key in this.wellness_practices_data){
-        this.wellness_practices_data[key] = JSON.stringify(this.wellness_practices_data[key]);
+       
+        var value = this.wellness_practices_data[key];
+        if(key!='name' && key!='practice_content')
+        {
+          value = JSON.stringify(value);
+        }
+        this.formData.append(key, value);
       }
 
-      this.WellnessPracticesService.saveWellnessPractice(this.wellness_practices_data,this.options).subscribe((response)=>{
+      if (this.fileformData.get('tech_type')) {
+
+        this.formData.append('files', this.fileformData.get('tech_type'));
+      }
+
+      this.WellnessPracticesService.saveWellnessPractice(this.formData,this.options).subscribe((response)=>{
         if(response['message'] && response['data']['status']==1)
         {
           this.toastr.success('Success!','Recored Successfully Inserted!',{timeOut: 3000});
           this.router.navigate(['admin-panel/wellness-practices/view']);
         }
         else{
-          this.toastr.success('Error!','Something Went Wrong!',{timeOut: 3000});
+          this.toastr.error('Error!','Something Went Wrong!',{timeOut: 3000});
           this.router.navigate(['admin-panel/wellness-practices/add']);
         }
       },(err)=>{
-        this.toastr.success('Error!','Something Went Wrong!',{timeOut: 3000});
+        this.toastr.error('Error!','Something Went Wrong!',{timeOut: 3000});
         this.router.navigate(['admin-panel/wellness-practices/add']);
       });
     }
   }
 
-  processFile(files: FileList) {
-    //console.log(imageInput.files[0]);
-    // const file: File = imageInput.files[0];
-    // const reader = new FileReader();
-
-    // reader.addEventListener('load', (event: any) => {
-
-    //   this.wellness_practices_data.tech_type = new ImageSnippet(event.target.result, file);
-    //   //console.log(this.selectedFile);
-    // });
-
-    // reader.readAsDataURL(file);
-    //console.log(files);
-    this.wellness_practices_data.files = [];
-    this.wellness_practices_data.files['tech_type'] = files;
-    //this.wellness_practices_data.tech_type = this.fileToUpload;
+  processFile(e:any) {
+    
+    //this.wellness_practices_data.tech_type = [];
+    //this.wellness_practices_data.tech_type = e.target.files;
+    const fileList: FileList = e.target.files;
+    //console.log(fileList);
+    var tech_type:any = [];
+    if (fileList.length > 0) {
+      this.fileformData = new FormData();
+      for(let i=0 ;i<fileList.length;i++)
+      {
+        const file = fileList[i];
+        //console.log(file);
+        tech_type.push(file);
+      }      
+      //console.log(tech_type);
+      this.fileformData.append('tech_type', tech_type);
+    }
   }  
+
+  edit_form(flag:boolean)
+  {
+    this.wellness_practices_form_validation = !flag;
+
+    if(flag)
+    {
+      this.show_spinner = true;
+      var wellness_practices_post_data:any = {};
+
+      wellness_practices_post_data['_id'] = this.update_id;
+      let w_data = this.wellness_practices_data;
+      //console.log(this.wellness_practices_data);
+      for(let key in this.wellness_practices_data){
+        if(key!='name' && key!='practice_content' && key!='tech_type')
+        {
+          wellness_practices_post_data[key] = JSON.stringify(this.wellness_practices_data[key]);
+        }
+        else{
+          wellness_practices_post_data[key] = this.wellness_practices_data[key];
+        }
+      }
+      this.WellnessPracticesService.updateWellnessPractice(wellness_practices_post_data,this.options).subscribe((response)=>{
+        if(response['message'] && response['data']['status']==1)
+        {
+          this.toastr.success('Success!','Recored Successfully Updated!',{timeOut: 3000});
+          this.router.navigate(['admin-panel/wellness-practices/view']);
+        }
+        else{
+          this.toastr.error('Error!','Something Went Wrong!',{timeOut: 3000});
+          //this.router.navigate(['admin-panel/wellness-practices/add']);
+        }
+      },(err)=>{
+        this.toastr.error('Error!','Something Went Wrong!',{timeOut: 3000});
+        //this.router.navigate(['admin-panel/wellness-practices/add']);
+      });
+    }
+  }
 
 }

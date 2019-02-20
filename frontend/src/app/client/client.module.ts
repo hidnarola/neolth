@@ -10,17 +10,14 @@ import { RegisterModule } from './register/register.module';
 import { HeaderComponent } from './share/header/header.component';
 import { FooterComponent } from './share/footer/footer.component';
 import { HomeModule } from './home/home.module';
+import { HcpAuthService } from './auth-service/hcp-auth.service';
+import { PatientAuthService } from './auth-service/patient-auth.service';
 
 @NgModule({
   declarations: [ClientComponent,HeaderComponent,FooterComponent],
   imports: [
     CommonModule,
     ClientRoutingModule,
-    HcpDashboardModule,
-    PatientDashboardModule,
-    LoginModule,
-    RegisterModule,
-    HomeModule
-  ]
+  ],providers:[HcpAuthService,PatientAuthService]
 })
 export class ClientModule { }

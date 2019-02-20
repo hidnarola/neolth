@@ -30,4 +30,8 @@ export class WellnessPracticesService {
    {
     return this.http.post(`${this.api_host}admin/disable_wellness_practice`,data,header);
    }
+   updateWellnessPractice(data:any,header)
+   {
+    return this.http.post(`${this.api_host}admin/update_wellness_practice`,data,header);
+   }
 }
