@@ -4,8 +4,10 @@ import { LoginComponent } from './login.component';
 import { LoginRoutingModule } from './login-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { HcpLoginModule } from './hcp-login/hcp-login.module';
-import { PatientLoginModule } from './patient-login/patient-login.module';
+import { HcpLoginComponent } from './hcp-login/hcp-login.component';
+import { PatientLoginComponent } from './patient-login/patient-login.component';
+import { HcpLoginService } from './hcp-login/hcp-login.service';
+import { PatientLoginService } from './patient-login/patient-login.service';
 
 @NgModule({
     imports: [
@@ -14,11 +16,10 @@ import { PatientLoginModule } from './patient-login/patient-login.module';
       FormsModule,
       ReactiveFormsModule,
       HttpClientModule,
-      HcpLoginModule,
-      PatientLoginModule
+      
     ],
-    declarations: [LoginComponent],
-    providers: []
+    declarations: [LoginComponent,HcpLoginComponent,PatientLoginComponent],
+    providers: [HcpLoginService,PatientLoginService]
   })
   export class LoginModule { }
   
