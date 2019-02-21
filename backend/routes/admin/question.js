@@ -70,13 +70,52 @@ router.post("/get", async (req, res) => {
     let sortingObject = {
         [sortOrderColumn]: sortOrder
     }
-    var resp_data = await common_helper.findWithFilter(Question, { "is_del": false }, req.body.start, req.body.length, totalMatchingCountRecords, sortingObject);
+    //var resp_data = await common_helper.findWithFilter(Question, { "is_del": false }, req.body.start, req.body.length, totalMatchingCountRecords, sortingObject);
+    console.log('totalMatchingCountRecords', totalMatchingCountRecords);
+
+    var aggregate = [
+        {
+            $lookup: {
+                from: "option",
+                localField: "_id",
+                foreignField: "question_id",
+                as: "options"
+            }
+        }
+    ]
+    var aggregates = [
+        {
+            $lookup: {
+                from: "option",
+                localField: "_id",
+                foreignField: "question_id",
+                as: "options"
+            }
+        }
+    ]
+
+    if (req.body.start) {
+        aggregate.push(
+            { $skip: req.body.start }
+        )
+    }
+    if (req.body.length) {
+        aggregate.push(
+            { $limit: req.body.length }
+        )
+    }
+    let resp_data = await Question.aggregate(aggregate);
+    console.log('resp_data.length', resp_data.length);
+
     if (resp_data.status == 0) {
         logger.error("Error occured while fetching User = ", resp_data);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
     } else {
         logger.trace("User got successfully = ", resp_data);
-        res.status(config.OK_STATUS).json(resp_data);
+        res.status(config.OK_STATUS).json({
+            "data": resp_data, "filteredrecords": resp_data.length,
+            "recordsTotal": totalMatchingCountRecords.recordsTotal
+        });
     }
 });
 
