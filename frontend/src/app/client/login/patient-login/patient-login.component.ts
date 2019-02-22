@@ -13,7 +13,7 @@ export class PatientLoginComponent implements OnInit {
 
   patient_data:any = {
     email:'mm@narola.email',
-    password:'mm@2019'
+    password:'mm@2018'
   };
 
 

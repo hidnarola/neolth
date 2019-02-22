@@ -12,12 +12,15 @@ import { FooterComponent } from './share/footer/footer.component';
 import { HomeModule } from './home/home.module';
 import { HcpAuthService } from './auth-service/hcp-auth.service';
 import { PatientAuthService } from './auth-service/patient-auth.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ClientComponent,HeaderComponent,FooterComponent],
   imports: [
     CommonModule,
     ClientRoutingModule,
+    FormsModule,
+    ReactiveFormsModule 
   ],providers:[HcpAuthService,PatientAuthService]
 })
 export class ClientModule { }

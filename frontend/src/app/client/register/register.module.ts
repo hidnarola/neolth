@@ -4,21 +4,23 @@ import { RegisterRoutingModule } from './register-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegisterComponent } from './register.component';
-import { HcpRegisterModule } from './hcp-register/hcp-register.module';
-import { PatientRegisterModule } from './patient-register/patient-register.module';
+import { HcpRegisterComponent } from './hcp-register/hcp-register.component';
+import { PatientRegisterComponent } from './patient-register/patient-register.component';
+import { PatientRegisterService } from './patient-register/patient-register.service';
+import { HcpRegisterService } from './hcp-register/hcp-register.service';
+import { NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown'; 
 
 @NgModule({
     imports: [
         CommonModule,
         RegisterRoutingModule,
         HttpClientModule,
-        HcpRegisterModule,
-        PatientRegisterModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
+        NgMultiSelectDropDownModule
       ],
-      declarations: [RegisterComponent],
-      providers : []
+      declarations: [RegisterComponent,HcpRegisterComponent,PatientRegisterComponent],
+      providers : [PatientRegisterService,HcpRegisterService]
 })
 
 export class RegisterModule { }

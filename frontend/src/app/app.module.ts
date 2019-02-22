@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ToastrModule } from 'ngx-toastr';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,8 @@ import { ToastrModule } from 'ngx-toastr';
     HttpClientModule,
     AppRoutingModule ,
     NgbModule,
+    FormsModule,
+    ReactiveFormsModule, 
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',
       timeOut:3000

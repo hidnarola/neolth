@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { LOCAL_STORAGE } from '@ng-toolkit/universal';
-import { HttpHeaders } from '@angular/common/http';
 import { HcpLoginService } from './hcp-login.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
