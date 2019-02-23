@@ -14,6 +14,8 @@ const routes: Routes = [
       {path:'register',loadChildren:'./register/register.module#RegisterModule'},
       {path:'hcp-dashboard', canActivate:[HcpAuthService],loadChildren:'./hcp-dashboard/hcp-dashboard.module#HcpDashboardModule'},
       {path:'patient-dashboard', canActivate:[PatientAuthService], loadChildren:'./patient-dashboard/patient-dashboard.module#PatientDashboardModule'},
+      {path:'hcp',  loadChildren:'./hcp/hcp.module#HcpModule'}, //canActivate:[HcpAuthService],
+      {path:'patient',  loadChildren:'./patient/patient.module#PatientModule'},//canActivate:[PatientAuthService],
     ]
   }
 ];
