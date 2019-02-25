@@ -13,13 +13,28 @@ export class HcpComponent implements OnInit {
     email:'pqr@narola.email',
     referral_code:'ABC123'
   }
+
+  profile_data:any;
   
-  constructor(private HcpService:HcpService,private toastr:ToastrService) { }
+  constructor(private HcpService:HcpService,private toastr:ToastrService) { 
+
+    this.HcpService.get_profile_data().subscribe((response)=>{
+      if(response)
+      {
+        if(response['status']==1)
+        {
+          this.profile_data = response['data'];
+        }
+      }
+    },(err)=>{
+      this.profile_data = null;
+    });
+  }
 
   ngOnInit() {
-    setTimeout(()=>{
+    /*setTimeout(()=>{
       this.invite_patient();
-    },3000)
+    },3000)*/
   }
 
   invite_patient()
@@ -54,17 +69,40 @@ export class HcpComponent implements OnInit {
         {
 
         }
+      }
+    },(err)=>{
+
+    });
+  }
+
+  update_profile_data()
+  {
+    var profile_put_data = {
+      email:this.profile_data.email,
+      username:this.profile_data.username,
+      phone_number:this.profile_data.phone_number,
+      name:this.profile_data.name,
+      practice_solution:this.profile_data.practice_solution
+    }
+
+    this.HcpService.update_profile(profile_put_data).subscribe((response)=>{
+      if(response)
+      {
+        if(response['data'].status==1)
+        {
+          this.toastr.success(response['data'].message,'Success!',{timeOut:3000});
+        }
         else
         {
-          
+          this.toastr.error('Something Went Wrong.','Error!',{timeOut:3000});
         }
       }
       else
       {
-
+        this.toastr.error('Something Went Wrong.','Error!',{timeOut:3000});
       }
     },(err)=>{
-
+      this.toastr.error('Something Went Wrong.','Error!',{timeOut:3000});
     });
   }
 

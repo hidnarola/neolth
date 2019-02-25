@@ -22,4 +22,5 @@ export class HcpDashboardComponent implements OnInit {
     this.router.navigate(['/login/hcp-login']);
   }
 
+
 }

@@ -24,4 +24,14 @@ export class HcpService {
   {
     return this.http.get(`${this.api_host}hcp/get_patient_of_hcp`);
   }
+
+  get_profile_data()
+  {
+    return this.http.get(`${this.api_host}hcp`,this.options);
+  }
+
+  update_profile(data:any) 
+  {
+    return this.http.put(`${this.api_host}hcp`,data,this.options);
+  }
 }

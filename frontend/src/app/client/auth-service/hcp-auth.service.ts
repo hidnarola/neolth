@@ -16,7 +16,7 @@ export class HcpAuthService {
     //console.log(hcp);return false;
     if (hcp!=null) {
       if (state.url.includes('/login/hcp-login')) {
-        this.router.navigate(['/hcp-dashboard']);
+        this.router.navigate(['/hcp/dashboard']);
       }
     }
     else{

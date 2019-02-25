@@ -10,4 +10,9 @@ export class HcpLoginService {
    {
        return this.http.post(`${this.api_host}hcp_login`,data);
    }
+
+   check_email(data:any)
+   {
+    return this.http.post(`${this.api_host}forgot_password`,data);
+   }
 }

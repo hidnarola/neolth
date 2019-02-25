@@ -5,9 +5,10 @@ import { HcpRoutingModule } from './hcp-routing.module';
 import { HcpComponent } from './hcp.component';
 import { ListPatientComponent } from './list-patient/list-patient.component';
 import { HcpService } from './hcp.service';
+import { HcpDashboardComponent } from './hcp-dashboard/hcp-dashboard.component';
 
 @NgModule({
-  declarations: [HcpComponent, ListPatientComponent],
+  declarations: [HcpComponent, ListPatientComponent, HcpDashboardComponent],
   imports: [
     CommonModule,
     HcpRoutingModule

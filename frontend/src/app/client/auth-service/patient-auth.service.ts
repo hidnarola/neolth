@@ -12,11 +12,10 @@ export class PatientAuthService {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     //const admin = atob(this.localStorage.getItem('admin'));
-    const hcp = this.localStorage.getItem('patient');
-    //console.log(hcp);return false;
-    if (hcp!=null) {
+    const patient = this.localStorage.getItem('patient');
+    if (patient!=null) {
       if (state.url.includes('/login/patient-login')) {
-        this.router.navigate(['/patient-dashboard']);
+        this.router.navigate(['/patient/dashboard']);
       }
     }
     else{
