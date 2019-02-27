@@ -453,12 +453,12 @@ router.post('/forgot_password', async (req, res) => {
             var resp_data = await common_helper.update(Patient, { "_id": patient.data._id }, up);
             let mail_resp = await mail_helper.send("reset_password", {
               "to": patient.data.email,
-              "subject": "LAM"
+              "subject": "Reset Password"
             }, {
                 "user": "",
-                "reset_link": "http://" + "/reset-password/" + reset_token + "/" + time
+                "reset_link": "http://" + "/reset-password/" + reset_token
               });
-
+            //"reset_link": "http://" + "/reset-password/" + reset_token + "/" + time
             if (mail_resp.status === 0) {
               res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending mail", "error": mail_resp.error });
             } else {

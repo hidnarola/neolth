@@ -111,10 +111,12 @@ router.post("/wellness_practice", async (req, res) => {
                                 }
                             }
                         );
-                    } else {
-                        logger.info(
-                            "File not available to upload. Executing next instruction"
-                        );
+                    }
+                    else {
+                        logger.info
+                            (
+                            "File not available to upload. Executing next instruction."
+                            );
                         callback(null, []);
                     }
                 }

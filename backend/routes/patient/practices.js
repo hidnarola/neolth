@@ -7,6 +7,7 @@ var _ = require('underscore');
 
 var common_helper = require('../../helpers/common_helper');
 var Practice = require('../../models/practices');
+var Self_activity = require('../../models/self_activity');
 
 
 //get all practices
@@ -78,5 +79,82 @@ router.put("/skip", async (req, res) => {
         res.status(config.OK_STATUS).json(resp_data);
     }
 });
+
+
+// Add self care activity
+router.post("/activity", async (req, res) => {
+    var schema = {
+        // "date": {
+        //     notEmpty: true,
+        //     errorMessage: "Date is required"
+        // },
+        "activity_name": {
+            notEmpty: true,
+            errorMessage: "Activity name is required"
+        },
+        "description": {
+            notEmpty: true,
+            errorMessage: "Description is required"
+        }
+
+    };
+    req.checkBody(schema);
+    var errors = req.validationErrors();
+    if (!errors) {
+        var obj = {
+            "patient_id": req.userInfo.id,
+            "date": req.body.date,
+            "activity_name": req.body.activity_name,
+            "description": req.body.description
+        };
+        console.log('obj', obj);
+
+        var activity_insert = await common_helper.insert(Self_activity, obj);
+        if (activity_insert.status === 0) {
+            res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending mail", "error": activity_insert });
+        } else {
+            //res.status(config.OK_STATUS).json({ "status": 1, "message": "Self care activity has been added" });
+            res.json({ "message": "Self care activity has been added", "data": activity_insert })
+        }
+    }
+    else {
+        logger.error("Validation Error = ", errors);
+        res.status(config.BAD_REQUEST).json({ message: errors });
+    }
+});
+
+
+//delete activity
+router.post('/activity/delete', async (req, res) => {
+    var del_id = await common_helper.findOne(Self_activity, { "_id": req.body.id }, 1)
+    if (del_id.status == 1) {
+        var del_resp = await Self_activity.update({ _id: new ObjectId(req.body.id) }, { $set: { "is_del": true } })
+        if (del_resp.status == 0) {
+            logger.debug("Error = ", del_resp.error);
+            res.status(config.INTERNAL_SERVER_ERROR).json(del_resp);
+        } else {
+            res.json({ "message": "Activity has been deleted successfully", "data": del_resp })
+        }
+    }
+    else {
+        res.status(config.BAD_REQUEST).json({ message: "Id does not exist" });
+    }
+});
+
+
+//Get activity
+router.get('/activity', async (req, res) => {
+    var resp = await Self_activity.find({ "patient_id": new ObjectId(req.userInfo.id), "is_del": false });
+    if (resp.status == 1) {
+        res.status(config.BAD_REQUEST).json({ message: "No data" });
+    }
+    else if (resp.status == 2) {
+        res.status(config.BAD_REQUEST).json({ message: "No data found" });
+    }
+    else {
+        res.json({ "message": "Data found", "data": resp })
+    }
+});
+
 
 module.exports = router;

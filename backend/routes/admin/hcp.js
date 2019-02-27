@@ -94,7 +94,6 @@ router.put("/approve_hcp", async (req, res) => {
         } else {
             res.status(config.OK_STATUS).json(resp_data);
         }
-
     }
 });
 
