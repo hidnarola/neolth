@@ -489,10 +489,10 @@ router.post('/forgot_password', async (req, res) => {
             var resp_data = await common_helper.update(HCP, { "_id": hcp.data._id }, up);
             let mail_resp = await mail_helper.send("reset_password", {
               "to": hcp.data.email,
-              "subject": "LAM"
+              "subject": "Reset password"
             }, {
                 "user": "",
-                "reset_link": "http://" + "/reset-password/" + reset_token + "/" + time
+                "reset_link": "http://" + "/reset-password/" + reset_token
               });
 
             if (mail_resp.status === 0) {
