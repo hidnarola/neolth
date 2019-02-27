@@ -49,7 +49,7 @@ export class PatientLoginComponent implements OnInit {
           };
           this.localStorage.setItem('patient', btoa(JSON.stringify(this.patient_data)));
           this.toastr.success('Success!','Successfully Logged In!',{timeOut: 3000});
-          this.router.navigate(['/patient-dashboard']);
+          this.router.navigate(['/patient/dashboard']);
         }
         else
         {

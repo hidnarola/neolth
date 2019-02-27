@@ -68,7 +68,7 @@ export class HcpLoginComponent implements OnInit {
           };
           this.localStorage.setItem('hcp', btoa(JSON.stringify(this.hcp_data)));
           this.toastr.success('Success!','Successfully Logged In!',{timeOut: 3000});
-          this.router.navigate(['/hcp-dashboard']);
+          this.router.navigate(['/hcp/dashboard']);
         }
         else
         {

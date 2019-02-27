@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { LOCAL_STORAGE } from '@ng-toolkit/universal';
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +9,12 @@ import { environment } from '../../../environments/environment';
 export class HcpService {
 
   private api_host : any = environment.API_URL;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,@Inject(LOCAL_STORAGE) private localStorage: any) { }
+  hcp = JSON.parse(atob(this.localStorage.getItem('hcp')));
+
 
   headers = new HttpHeaders({
-    'x-access-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjNDE1MjM2MDJkNzY3MzEyNGVhZmEwYyIsInJvbGUiOiJoY3AiLCJpYXQiOjE1NDc3ODQ4ODQsImV4cCI6MTU1NjQyNDg4NH0.kiaH5fstvaBLzTHAqSqIusPvEic5kVX6aWkney6nkXM'
+    'x-access-token':this.hcp.token
   });
   options = { headers: this.headers };
 
