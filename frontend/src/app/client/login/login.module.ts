@@ -14,7 +14,7 @@ import { PatientLoginService } from './patient-login/patient-login.service';
       CommonModule,
       LoginRoutingModule,
       FormsModule,
-      ReactiveFormsModule,
+      ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl:'never'}),
       HttpClientModule,
       
     ],

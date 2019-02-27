@@ -1,3 +1,122 @@
-<p>
-  hcp-register works!
-</p>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+        <div class="card-body">
+          <form [formGroup]="hcp_register_form" enctype="multipart/form-data">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" class="form-control" name="first_name" formControlName="first_name" [(ngModel)]="hcp_data.first_name" id="first_name" required >
+              <!-- <div class="cust_err_msg" *ngIf="f.first_name.errors">
+                  <span class="text-danger">This field is required.</span>
+              </div> -->
+            </div>
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" class="form-control" name="last_name" formControlName="last_name" [(ngModel)]="hcp_data.last_name">
+                <!-- <div class="cust_err_msg" *ngIf="hcp_register_form_validation && !hcp_register_form.controls['last_name'].valid">
+                    <span *ngIf="hcp_register_form.controls['last_name'].errors['required']" class="text-danger">This field is required.</span>
+                </div> -->
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="text" class="form-control" name="email" formControlName="email" [(ngModel)]="hcp_data.email">
+                <!-- <div class="cust_err_msg" *ngIf="hcp_register_form_validation && !hcp_register_form.controls['email'].valid">
+                    <span *ngIf="hcp_register_form.controls['email'].errors['required']" class="text-danger">This field is required.</span>
+                </div> -->
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" name="password" formControlName="password" [(ngModel)]="hcp_data.password">
+                <!-- <div class="cust_err_msg" *ngIf="hcp_register_form_validation && !hcp_register_form.controls['password'].valid">
+                    <span *ngIf="hcp_register_form.controls['password'].errors['required']" class="text-danger">This field is required.</span>
+                </div> -->
+            </div>
+            <div class="form-group">
+                <label>User Name</label>
+                <input type="text" class="form-control" name="username" formControlName="username" [(ngModel)]="hcp_data.username">
+                <!-- <div class="cust_err_msg" *ngIf="hcp_register_form_validation && !hcp_register_form.controls['username'].valid">
+                    <span *ngIf="hcp_register_form.controls['username'].errors['required']" class="text-danger">This field is required.</span>
+                </div> -->
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text" class="form-control" name="phone_number" formControlName="phone_number" [(ngModel)]="hcp_data.phone_number">
+                <!-- <div class="cust_err_msg" *ngIf="hcp_register_form_validation && !hcp_register_form.controls['phone_number'].valid">
+                    <span *ngIf="hcp_register_form.controls['phone_number'].errors['required']" class="text-danger">This field is required.</span>
+                </div> -->
+            </div>
+            <div class="form-group">
+                <label>Sex </label>
+                <input type="radio"  name="sex" formControlName="sex" [(ngModel)]="hcp_data.sex" value="male"> Male
+                <input type="radio"  name="sex" formControlName="sex" [(ngModel)]="hcp_data.sex" value="female"> FeMale
+                <!-- <div class="cust_err_msg" *ngIf="hcp_register_form_validation && !hcp_register_form.controls['sex'].valid">
+                    <span *ngIf="hcp_register_form.controls['sex'].errors['required']" class="text-danger">This field is required.</span>
+                </div> -->
+              </div>
+            <div class="form-group">
+                <label>Degree</label>
+                <!-- <input type="text" class="form-control" name="sex" [FormControlName]="sex" [(ngModel)]="hcp_data.sex"> -->
+                <ng-multiselect-dropdown
+                    [placeholder]="'Degree'"
+                    [data]="degree"
+                    [settings]="DropdownSetting"
+                    [(ngModel)] = "hcp_data.degree"
+                    name="degree"
+                    formControlName="degree"
+                    >
+                </ng-multiselect-dropdown>
+                <!-- <div class="cust_err_msg" *ngIf="hcp_register_form_validation && !hcp_register_form.controls['degree'].valid">
+                    <span *ngIf="hcp_register_form.controls['degree'].errors['required']" class="text-danger">This field is required.</span>
+                </div> -->
+            </div>
+            <div class="form-group">
+                <label>Speciality</label>
+                <input type="text" class="form-control" name="speciality" formControlName="speciality" [(ngModel)]="hcp_data.speciality">
+                <!-- <div class="cust_err_msg" *ngIf="hcp_register_form_validation && !hcp_register_form.controls['speciality'].valid">
+                    <span *ngIf="hcp_register_form.controls['speciality'].errors['required']" class="text-danger">This field is required.</span>
+                </div> -->
+            </div>
+            <div class="form-group">
+                <label>Name of Practice</label>
+                <input type="text" class="form-control" name="practice_name" formControlName="practice_name" [(ngModel)]="hcp_data.practice_name">
+                <!-- <div class="cust_err_msg" *ngIf="hcp_register_form_validation && !hcp_register_form.controls['practice_name'].valid">
+                    <span *ngIf="hcp_register_form.controls['practice_name'].errors['required']" class="text-danger">This field is required.</span>
+                </div> -->
+            </div>
+            <div class="form-group">
+                <label>Address of Practice</label>
+                <input type="text" class="form-control" name="practice_location" formControlName="practice_location" [(ngModel)]="hcp_data.practice_location">
+                <!-- <div class="cust_err_msg" *ngIf="hcp_register_form_validation && !hcp_register_form.controls['practice_location'].valid">
+                    <span *ngIf="hcp_register_form.controls['practice_location'].errors['required']" class="text-danger">This field is required.</span>
+                </div> -->
+            </div>
+            <div class="form-group">
+                <label>Solution of Practice</label>
+                <input type="text" class="form-control" name="practice_solution" formControlName="practice_solution" [(ngModel)]="hcp_data.practice_solution">
+                <!-- <div class="cust_err_msg" *ngIf="hcp_register_form_validation && !hcp_register_form.controls['practice_solution'].valid">
+                    <span *ngIf="hcp_register_form.controls['practice_solution'].errors['required']" class="text-danger">This field is required.</span>
+                </div> -->
+            </div>
+            <div class="form-group">
+                <label>Verification of credentials</label>
+                <input type="file" class="form-control" (change)="processFile($event)" multiple>
+            </div>
+            <div class="form-group">
+                <label>Can we list you on Neolth as a participating provider? </label>
+                <input type="radio"  name="participating_provider" formControlName="participating_provider" [(ngModel)]="hcp_data.participating_provider" value="yes"> YES
+                <input type="radio" name="participating_provider" formControlName="participating_provider" [(ngModel)]="hcp_data.participating_provider" value="no"> No
+                <!-- <div class="cust_err_msg" *ngIf="hcp_register_form_validation && !hcp_register_form.controls['participating_provider'].valid">
+                    <span *ngIf="hcp_register_form.controls['participating_provider'].errors['required']" class="text-danger">This field is required.</span>
+                </div> -->
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" (click)="save_hcp()">SUBMIT<i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
+            </div>
+          </form>
+        </div>
+    </div>
+  </div>
+</div>
+          
+

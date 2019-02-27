@@ -12,12 +12,17 @@ import { FooterComponent } from './share/footer/footer.component';
 import { HomeModule } from './home/home.module';
 import { HcpAuthService } from './auth-service/hcp-auth.service';
 import { PatientAuthService } from './auth-service/patient-auth.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ResetPasswordService } from './reset-password/reset-password.service';
 
 @NgModule({
-  declarations: [ClientComponent,HeaderComponent,FooterComponent],
+  declarations: [ClientComponent,HeaderComponent,FooterComponent, ResetPasswordComponent],
   imports: [
     CommonModule,
     ClientRoutingModule,
-  ],providers:[HcpAuthService,PatientAuthService]
+    FormsModule,
+    ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl:'never'})
+  ],providers:[HcpAuthService,PatientAuthService,ResetPasswordService]
 })
 export class ClientModule { }

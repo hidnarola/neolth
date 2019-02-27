@@ -10,11 +10,7 @@ import { Router } from '@angular/router';
 })
 export class PatientDashboardComponent implements OnInit {
 
-  patient_data:any; 
-  constructor(@Inject(LOCAL_STORAGE) private localStorage: any,private toastr:ToastrService,private router:Router) { 
-    //this.patient_data = JSON.parse(atob(this.localStorage.getItem('patient')));
-    
-  }
+  constructor(@Inject(LOCAL_STORAGE) private localStorage: any,private toastr:ToastrService,private router:Router) { }
 
   ngOnInit() {
   }

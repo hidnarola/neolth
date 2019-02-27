@@ -1,3 +1,54 @@
-<p>
-  hcp-login works!
-</p>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+        <div class="card-body">
+          <div *ngIf="is_login_component==true">
+            <form [formGroup]="hcp_login_form" >
+              <div class="form-group">
+                <label>Email</label>
+                <input type="text" class="form-control" name="email" formControlName="email" [(ngModel)]="hcp_data.email" required >
+                <!-- <div class="cust_err_msg" *ngIf="f.first_name.errors">
+                    <span class="text-danger">This field is required.</span>
+                </div> -->
+              </div>
+            
+              <div class="form-group">
+                  <label>Password</label>
+                  <input type="password" class="form-control" name="password" formControlName="password" [(ngModel)]="hcp_data.password">
+                  <!-- <div class="cust_err_msg" *ngIf="hcp_register_form_validation && !hcp_register_form.controls['password'].valid">
+                      <span *ngIf="hcp_register_form.controls['password'].errors['required']" class="text-danger">This field is required.</span>
+                  </div> -->
+              </div>
+              
+              <div class="form-group">
+                  <button class="btn btn-primary" (click)="login()" [disabled]="show_spinner">LOGIN <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
+                  <!--  -->
+              </div>
+            </form>
+            <div class="row">
+              <a (click)="changeComponent('forgot_password')" style="cursor:pointer">Forgot Password ?</a>
+            </div>
+          </div>
+
+          <div *ngIf="is_forgot_password_component">
+              <form [formGroup]="forgot_password_form" >
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="text" class="form-control" name="email" formControlName="email" [(ngModel)]="forgot_password_data.email" required >
+                  <!-- <div class="cust_err_msg" *ngIf="f.first_name.errors">
+                      <span class="text-danger">This field is required.</span>
+                  </div> -->
+                </div>                
+                <div class="form-group" >
+                    <button class="btn btn-primary" (click)="check_email()" [disabled]="show_spinner">Check <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
+                    <!-- <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i> -->
+                </div>
+              </form>
+              <div class="row">
+                <a (click)="changeComponent('login')" style="cursor:pointer">Back to Login</a>
+              </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
