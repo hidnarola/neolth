@@ -37,4 +37,9 @@ export class HcpService {
   {
     return this.http.put(`${this.api_host}hcp`,data,this.options);
   }
+
+  create_sub_user(data:any)
+  {
+    return this.http.post(`${this.api_host}hcp/create_sub_user`,data,this.options);
+  }
 }

@@ -8,9 +8,10 @@ import { PatientService } from './patient.service';
 import { MyWellnessPracticesComponent } from './my-wellness-practices/my-wellness-practices.component';
 import { DataTablesModule } from 'angular-datatables';
 import { MonthlyReportComponent } from './monthly-report/monthly-report.component';
+import { SelfCareActivityComponent } from './self-care-activity/self-care-activity.component';
 
 @NgModule({
-  declarations: [PatientComponent, PatientDashboardComponent, MyWellnessPracticesComponent, MonthlyReportComponent],
+  declarations: [PatientComponent, PatientDashboardComponent, MyWellnessPracticesComponent, MonthlyReportComponent, SelfCareActivityComponent],
   imports: [
     CommonModule,
     PatientRoutingModule,

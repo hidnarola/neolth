@@ -14,6 +14,7 @@ export class MonthlyReportComponent implements OnInit {
   @ViewChild(DataTableDirective)
   dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
+  dtOptions2: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
   
   monthly_report:any = [];
@@ -71,7 +72,7 @@ export class MonthlyReportComponent implements OnInit {
       ]
     };
     
-    this.dtOptions = {
+    this.dtOptions2 = {
       // pagingType: 'full_numbers',
       pageLength: 10,
       serverSide: true,

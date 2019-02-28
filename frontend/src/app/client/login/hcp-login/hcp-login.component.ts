@@ -56,7 +56,6 @@ export class HcpLoginComponent implements OnInit {
     this.HcpLoginService.check_login(this.hcp_data).subscribe((response)=>{
       this.hcp_data['email'] = '';
       this.hcp_data['password'] = '';
-
       if(response)
       {
         if(response['status']==1)
