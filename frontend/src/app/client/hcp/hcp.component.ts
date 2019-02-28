@@ -99,10 +99,40 @@ export class HcpComponent implements OnInit {
       }
       else
       {
-        this.toastr.error('Something Went Wrong.','Error!',{timeOut:3000});
+        this.toastr.error('Something went wrong.','Error!',{timeOut:3000});
       }
     },(err)=>{
-      this.toastr.error('Something Went Wrong.','Error!',{timeOut:3000});
+      this.toastr.error('Something went wrong.','Error!',{timeOut:3000});
+    });
+  }
+
+  create_sub_user_data:any;
+
+  create_sub_user()
+  {
+    var post_data={
+      email:'namo@narola.email',
+      password:'narola21'
+    };  
+
+    this.HcpService.create_sub_user(post_data).subscribe((res)=>{
+      if(res)
+      {
+        if(res['status']==1)
+        {
+          this.toastr.success(res['message'],'Success!',{timeOut:3000});
+        }
+        else
+        {
+          this.toastr.error(res['message'],'Error!',{timeOut:3000});
+        }
+      }
+      else
+      {
+        this.toastr.error('Something went wrong!','Error!',{timeOut:3000});  
+      }
+    },(err)=>{
+      this.toastr.error('Something went wrong!','Error!',{timeOut:3000});
     });
   }
 

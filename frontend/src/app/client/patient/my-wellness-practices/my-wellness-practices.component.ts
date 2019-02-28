@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { PatientService } from '../patient.service';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-my-wellness-practices',
@@ -16,7 +17,7 @@ export class MyWellnessPracticesComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject();
   
   my_wellness_practices:any;
-  constructor(private PatientService:PatientService) { 
+  constructor(private PatientService:PatientService,private toastr:ToastrService) { 
 
   }
 
@@ -68,5 +69,53 @@ export class MyWellnessPracticesComponent implements OnInit {
     };
   }
 
+  mark_as_complete_practices(practice_id:string)
+  {
+    var post_data = { id: practice_id };
+    this.PatientService.mark_as_complete_practices(post_data).subscribe((response)=>{
+      if(response)
+      {
+        if(response['status']==1)
+        {
+          this.toastr.success(response['message'],'Success!',{timeOut:3000});
+        }
+        else
+        {
+          this.toastr.error(response['message'],'Error!',{timeOut:3000});
+        }
+      }
+      else
+      {
+        this.toastr.error(response['message'],'Error!',{timeOut:3000});
+      }
+    },(err)=>{
+      this.toastr.error('Something Went Wrong!','Error!',{timeOut:3000});
+    });
+  }
+
+  skip_practices(practice_id:string)
+  {
+    var post_data = { id: practice_id };
+
+    this.PatientService.skip_practices(post_data).subscribe((response)=>{
+      if(response)
+      {
+        if(response['status']==1)
+        {
+          this.toastr.success(response['message'],'Success!',{timeOut:3000});
+        }
+        else
+        {
+          this.toastr.error(response['message'],'Error!',{timeOut:3000});
+        }
+      }
+      else
+      {
+        this.toastr.error(response['message'],'Error!',{timeOut:3000});
+      }
+    },(err)=>{
+      this.toastr.error('Something Went Wrong!','Error!',{timeOut:3000});
+    });
+  }
 
 }

@@ -16,7 +16,6 @@ export class ResetPasswordComponent implements OnInit {
   reset_form_validation: boolean = false;
   show_spinner: boolean = false;
   token = '';
-  expiry_time = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -32,17 +31,10 @@ export class ResetPasswordComponent implements OnInit {
     },{
       //validators:this.passwordMatchValidator
     });
-     this.token = this.route.snapshot.params.token;
-     this.expiry_time = this.route.snapshot.params.time;
-    // if (this.expiry_time != '') {
-    //   let current_date = new Date();
-    //   if (current_date >= new Date(atob(this.expiry_time))) {
-    //     let msg = 'Link has been expired';
-    //     this.toastr.error('', msg, { timeOut: 3000 });
-    //     //this.router.navigate(['/']);
-    //   }
-    // }
-    //console.log(this.token,this.expiry_time);
+     //this.token = this.route.snapshot.params.token;
+      this.route.params.subscribe(params=>{
+        this.token=params.token;
+     })
   }
 
   passwordMatchValidator(g: FormGroup) {
@@ -62,7 +54,7 @@ export class ResetPasswordComponent implements OnInit {
     
     this.ResetPasswordService.resetPassword(data).subscribe((response) => {
       this.toastr.success(response['message'], 'Success!', { timeOut: 3000 });
-      this.router.navigate(['/login']);
+      this.router.navigate(['/home']);
     }, (error) => {
       if (error['error'].message) {
         this.toastr.error(error['error'].message, 'Error!', { timeOut: 3000 });

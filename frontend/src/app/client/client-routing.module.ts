@@ -15,9 +15,7 @@ const routes: Routes = [
       {path:'register',loadChildren:'./register/register.module#RegisterModule'},
       {path:'hcp',canActivate:[HcpAuthService],  loadChildren:'./hcp/hcp.module#HcpModule'},
       {path:'patient', canActivate:[PatientAuthService],  loadChildren:'./patient/patient.module#PatientModule'},
-      {path:'reset-password/:token/:time' , component: ResetPasswordComponent}
-      //{path:'hcp-dashboard', canActivate:[HcpAuthService],loadChildren:'./hcp-dashboard/hcp-dashboard.module#HcpDashboardModule'},
-      //{path:'patient-dashboard', canActivate:[PatientAuthService], loadChildren:'./patient-dashboard/patient-dashboard.module#PatientDashboardModule'},
+      {path:'reset-password/:token' , component: ResetPasswordComponent}
     ]
   }
 ];
@@ -27,3 +25,6 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class ClientRoutingModule { }
+
+//{path:'hcp-dashboard', canActivate:[HcpAuthService],loadChildren:'./hcp-dashboard/hcp-dashboard.module#HcpDashboardModule'},
+//{path:'patient-dashboard', canActivate:[PatientAuthService], loadChildren:'./patient-dashboard/patient-dashboard.module#PatientDashboardModule'},
