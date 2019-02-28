@@ -62,7 +62,6 @@ router.post("/", async (req, res) => {
                             patient_id: req.userInfo.id
                         });
                     }
-
                     if (d.sequence == 5 && (oId.toString()) === (a.option_id.toString())) {
                         symptomArr.push(o.value.value.tag)
                     }

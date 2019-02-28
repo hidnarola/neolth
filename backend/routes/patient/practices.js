@@ -107,8 +107,6 @@ router.post("/activity", async (req, res) => {
             "activity_name": req.body.activity_name,
             "description": req.body.description
         };
-        console.log('obj', obj);
-
         var activity_insert = await common_helper.insert(Self_activity, obj);
         if (activity_insert.status === 0) {
             res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending mail", "error": activity_insert });

@@ -465,11 +465,9 @@ router.post('/forgot_password', async (req, res) => {
               res.status(config.OK_STATUS).json({ "status": 1, "message": "Reset link has been sent on your email address " });
             }
           }
-
           else {
             res.status(config.BAD_REQUEST).json({ "status": 0, "message": "You havn't set your password yet" });
           }
-
         }
       }
       else if (hcp.status === 1) {
@@ -586,7 +584,6 @@ router.post('/reset_password', async (req, res) => {
           if (reset_patient.data.flag == 0) {
             if (decoded._id) {
               var update_resp = await common_helper.update(Patient, { "_id": decoded._id }, { "password": bcrypt.hashSync(req.body.password, saltRounds), "flag": 1 });
-
               if (update_resp.status === 0) {
                 logger.trace("Error occured while updating : ", update_resp.error);
                 res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying user's email" });

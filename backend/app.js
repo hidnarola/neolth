@@ -13,8 +13,8 @@ var fileUpload = require('express-fileupload');
 var expressValidator = require('express-validator');
 //var cron_jobs = require('./crons/index');
 
-// var swaggerUi = require('swagger-ui-express'),
-//   swaggerDocument = require('./swagger.json');
+var swaggerUi = require('swagger-ui-express'),
+  swaggerDocument = require('./swagger.json');
 
 // Create cluster environment
 var cluster = require('cluster');
@@ -49,7 +49,7 @@ var options = {
   }
 };
 
-//app.use('/api/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+app.use('/api/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
 // Support cross origin request
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
